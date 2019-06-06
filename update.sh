@@ -70,7 +70,7 @@ for latest in "${latests[@]}"; do
 
 			cp ".dockerignore" "$dir/.dockerignore"
 			cp "docker-compose_${compose[$variant]}.yml" "$dir/docker-compose.yml"
-			cp -rf ./docker-nginx "$dir/"
+			cp -rf ./docker-nginx "$dir/nginx"
 
 			travisEnv='\n    - VERSION='"$version"' VARIANT='"$variant$travisEnv"
 

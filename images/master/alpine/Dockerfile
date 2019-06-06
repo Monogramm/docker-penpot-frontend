@@ -45,4 +45,4 @@ ENV LANG=en_US.UTF-8 \
 COPY --from=0 /home/uxbox/frontend/dist /usr/share/nginx/html
 
 # NGINX configurations
-COPY ./docker-nginx/conf.d /etc/nginx/conf.d
+COPY ./nginx/conf.d /etc/nginx/conf.d
