@@ -1,0 +1,31 @@
+dist: trusty
+sudo: required
+
+services: docker
+
+language: bash
+
+branches:
+  only:
+    - master
+
+before_script:
+  - env | sort
+  - dir="images/${VERSION}/${VARIANT:+-$VARIANT}"
+
+script:
+  - cd "$dir"
+  - docker-compose build
+  - docker images
+  - travis_retry docker-compose up -d && sleep 60
+  - docker-compose ps
+  - docker-compose logs
+  - docker-compose ps "uxbox-frontenddb" | grep "Up"
+  - docker-compose ps "uxbox-frontend" | grep "Up"
+
+notifications:
+  email: false
+
+env: # Environments
+    - VERSION=master VARIANT=alpine
+    - VERSION=master VARIANT=mainline
