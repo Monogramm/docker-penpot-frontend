@@ -69,8 +69,8 @@ services:
     container_name: uxbox_frontend
     #hostname: uxbox.io
     #restart: always
-    depends_on:
-      - uxbox_backend
+    #depends_on:
+    #  - uxbox_backend
     ports:
       - 80:80
     volumes:
