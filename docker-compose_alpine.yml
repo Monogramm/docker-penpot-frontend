@@ -64,8 +64,8 @@ services:
   #    - UXBOX_SECRET=""
 
   uxbox_frontend:
-    #build: ./
-    image: monogramm/uxbox:frontend
+    build: ./
+    #image: monogramm/uxbox:frontend
     container_name: uxbox_frontend
     #hostname: uxbox.io
     #restart: always
