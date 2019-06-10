@@ -20,8 +20,9 @@ script:
   - travis_retry docker-compose up -d && sleep 60
   - docker-compose ps
   - docker-compose logs
-  - docker-compose ps "uxbox-frontenddb" | grep "Up"
-  - docker-compose ps "uxbox-frontend" | grep "Up"
+  #- docker-compose ps "uxbox_db" | grep "Up"
+  #- docker-compose ps "uxbox_backend" | grep "Up"
+  - docker-compose ps "uxbox_frontend" | grep "Up"
 
 notifications:
   email: false
