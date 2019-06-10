@@ -8,6 +8,7 @@ language: bash
 branches:
   only:
     - master
+    - develop
 
 before_script:
   - env | sort
@@ -28,5 +29,5 @@ notifications:
   email: false
 
 env: # Environments
-    - VERSION=master VARIANT=alpine
-    - VERSION=master VARIANT=mainline
+    - VERSION=build-refactor VARIANT=alpine
+    - VERSION=build-refactor VARIANT=mainline

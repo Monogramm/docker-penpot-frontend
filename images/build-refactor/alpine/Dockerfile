@@ -1,7 +1,7 @@
 FROM monogramm/docker-uxbox-builder:latest
 
 ENV LEIN_ROOT=TRUE \
-    UXBOX_VERSION=master \
+    UXBOX_VERSION=build-refactor \
     UXBOX_CONFIG_URL="/api" \
     UXBOX_DEMO=false \
     UXBOX_DEBUG=false
@@ -16,9 +16,7 @@ RUN set -ex; \
     cd /home/uxbox; \
     tar -xzf /tmp/uxbox.tar.gz; \
     rm -f /tmp/uxbox.tar.gz; \
-    mv /home/uxbox/uxbox-${UXBOX_VERSION}/frontend /home/uxbox/; \
-    rm -rf /home/uxbox/uxbox-${UXBOX_VERSION}; \
-    cd /home/uxbox/frontend; \
+    cd /home/uxbox/uxbox-${UXBOX_VERSION}/frontend; \
     rm -f Dockerfile; \
     rm -rf ./dist ./node_modules; \
     sed -i \
@@ -36,7 +34,7 @@ RUN set -ex; \
 
 
 # Once application has been built, prepare production image
-FROM nginx:mainline
+FROM nginx:alpine
 
 LABEL maintainer="Monogramm Maintainers <opensource at monogramm dot io>"
 

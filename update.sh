@@ -32,7 +32,8 @@ dockerRepo="monogramm/docker-uxbox-frontend"
 #	sort -urV ) )
 
 latests=(
-	master
+	#master
+	build-refactor
 )
 
 # Remove existing images
