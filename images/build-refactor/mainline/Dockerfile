@@ -1,4 +1,4 @@
-FROM monogramm/docker-uxbox-builder:develop
+FROM monogramm/docker-uxbox-builder:latest
 
 ENV UXBOX_VERSION=build-refactor \
     UXBOX_CONFIG_URL="/api" \
