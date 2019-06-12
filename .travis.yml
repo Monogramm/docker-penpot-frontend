@@ -11,7 +11,7 @@ branches:
 
 before_script:
   - env | sort
-  - dir="images/${VERSION}/${VARIANT:+-$VARIANT}"
+  - dir="images/${VERSION}/${VARIANT}"
 
 script:
   - cd "$dir"
