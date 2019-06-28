@@ -29,5 +29,5 @@ notifications:
   email: false
 
 env: # Environments
-    - VERSION=build-refactor VARIANT=alpine
-    - VERSION=build-refactor VARIANT=mainline
+    - VERSION=master VARIANT=alpine
+    - VERSION=master VARIANT=mainline

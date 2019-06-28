@@ -1,6 +1,6 @@
 FROM monogramm/docker-uxbox-builder:latest
 
-ENV UXBOX_VERSION=build-refactor \
+ENV UXBOX_VERSION=master \
     UXBOX_CONFIG_URL="/api" \
     UXBOX_DEMO=false \
     UXBOX_DEBUG=false
@@ -25,7 +25,7 @@ RUN set -ex; \
 
 
 # Once application has been built, prepare production image
-FROM nginx:alpine
+FROM nginx:mainline
 
 LABEL maintainer="Monogramm Maintainers <opensource at monogramm dot io>"
 
