@@ -1,7 +1,6 @@
 FROM monogramm/docker-uxbox-builder:latest
 
-ENV LEIN_ROOT=TRUE \
-    UXBOX_VERSION=master \
+ENV UXBOX_VERSION=master \
     UXBOX_CONFIG_URL="/api" \
     UXBOX_DEMO=false \
     UXBOX_DEBUG=false
@@ -16,20 +15,12 @@ RUN set -ex; \
     cd /home/uxbox; \
     tar -xzf /tmp/uxbox.tar.gz; \
     rm -f /tmp/uxbox.tar.gz; \
-    cd /home/uxbox/uxbox-${UXBOX_VERSION}/frontend; \
+    mv /home/uxbox/uxbox-${UXBOX_VERSION}/frontend /home/uxbox/; \
+    rm -rf /home/uxbox/uxbox-${UXBOX_VERSION}; \
+    cd /home/uxbox/frontend; \
     rm -f Dockerfile; \
     rm -rf ./dist ./node_modules; \
-    sed -i \
-        -e 's|"uxbox.config.url" ".*"|"uxbox.config.url" "${UXBOX_CONFIG_URL}"|g' \
-        scripts/figwheel.clj; \
-    sed -i \
-        -e 's|url ".*")|url "${UXBOX_CONFIG_URL}")|g' \
-        src/uxbox/config.cljs; \
-    npm install; \
-    npm run prod; \
-    bash -c "/home/uxbox/frontend/scripts/dist-main"; \
-    bash -c "/home/uxbox/frontend/scripts/dist-view"; \
-    bash -c "/home/uxbox/frontend/scripts/dist-worker"
+    ./scripts/build-release.sh
 
 
 
