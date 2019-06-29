@@ -6,78 +6,83 @@ volumes:
   frontend_data:
 
 services:
-  #uxbox_db:
-  #  image: postgres:alpine
-  #  container_name: uxbox_db
-  #  restart: always
-  #  ports:
-  #    - 5432:5432
-  #  volumes:
-  #    - db_data:/var/lib/postgresql/data
-  #    - /etc/localtime:/etc/localtime:ro
-  #    - /etc/timezone:/etc/timezone:ro
-  #  environment:
-  #    - POSTGRES_DB=uxbox
-  #    - POSTGRES_USER=uxbox
-  #    - POSTGRES_PASSWORD=uxbox_postgres_password
+  uxbox_db:
+    image: postgres:alpine
+    container_name: uxbox_db
+    restart: always
+    ports:
+      - 5432:5432
+    volumes:
+      - db_data:/var/lib/postgresql/data
+      - /etc/localtime:/etc/localtime:ro
+      - /etc/timezone:/etc/timezone:ro
+    environment:
+      - POSTGRES_DB=uxbox
+      - POSTGRES_USER=uxbox
+      - POSTGRES_PASSWORD=uxbox_postgres_password
 
-  #uxbox_backend:
-  #  #build: ./
-  #  image: monogramm/docker-uxbox-backend
-  #  container_name: uxbox_backend
-  #  #restart: always
-  #  depends_on:
-  #    - uxbox_db
-  #  ports:
-  #    - 6060:6060
-  #  volumes:
-  #    - backend_data:/srv/uxbox/resources
-  #    - /etc/localtime:/etc/localtime:ro
-  #    - /etc/timezone:/etc/timezone:ro
-  #  environment:
-  #    # HTTP setup
-  #    - UXBOX_HTTP_SERVER_DEBUG=false
-  #    - UXBOX_MEDIA_URI="/media/"
-  #    #- UXBOX_MEDIA_URI="http://uxbox.io/media/"
-  #    - UXBOX_MEDIA_DIRECTORY="resources/public/media"
-  #    - UXBOX_ASSETS_URI="/static/"
-  #    #- UXBOX_ASSETS_URI="http://uxbox.io/static/"
-  #    - UXBOX_ASSETS_DIRECTORY="resources/public/static"
-  #    # Database setup
-  #    - UXBOX_DATABASE_USERNAME="uxbox"
-  #    - UXBOX_DATABASE_PASSWORD="uxbox_postgres_password"
-  #    - UXBOX_DATABASE_NAME="uxbox"
-  #    - UXBOX_DATABASE_SERVER="uxbox_db"
-  #    - UXBOX_DATABASE_PORT=5432
-  #    # Mail setup
-  #    - UXBOX_EMAIL_REPLY_TO="no-reply@uxbox.io"
-  #    - UXBOX_EMAIL_FROM="no-reply@uxbox.io"
-  #    # STMP setup
-  #    - UXBOX_SMTP_HOST="localhost"
-  #    - UXBOX_SMTP_PORT=25
-  #    - UXBOX_SMTP_USER="uxbox"
-  #    - UXBOX_SMTP_PASSWORD="youshouldoverwritethiswithsomethingelse"
-  #    - UXBOX_SMTP_SSL=false
-  #    - UXBOX_SMTP_TLS=false
-  #    - UXBOX_SMTP_ENABLED=false
-  #    # Security setup
-  #    - UXBOX_SECRET=""
+  uxbox_backend:
+    #build: ./
+    image: monogramm/docker-uxbox-backend:latest
+    container_name: uxbox_backend
+    #restart: always
+    depends_on:
+      - uxbox_db
+    ports:
+      - 6060:6060
+    volumes:
+      - backend_data:/srv/uxbox/resources
+      - /etc/localtime:/etc/localtime:ro
+      - /etc/timezone:/etc/timezone:ro
+    environment:
+      # Security setup
+      - UXBOX_SECRET="youshouldoverwritethiswithsomethingelse"
+      # HTTP setup
+      - UXBOX_HTTP_SERVER_DEBUG=false
+      - UXBOX_MEDIA_URI="/media/"
+      #- UXBOX_MEDIA_URI="http://uxbox.io/media/"
+      - UXBOX_MEDIA_DIRECTORY="resources/public/media"
+      - UXBOX_ASSETS_URI="/static/"
+      #- UXBOX_ASSETS_URI="http://uxbox.io/static/"
+      - UXBOX_ASSETS_DIRECTORY="resources/public/static"
+      # Database setup
+      - UXBOX_DATABASE_USERNAME="uxbox"
+      - UXBOX_DATABASE_PASSWORD="uxbox_postgres_password"
+      - UXBOX_DATABASE_NAME="uxbox"
+      - UXBOX_DATABASE_SERVER="uxbox_db"
+      - UXBOX_DATABASE_PORT=5432
+      # Mail setup
+      - UXBOX_EMAIL_REPLY_TO="no-reply@uxbox.io"
+      - UXBOX_EMAIL_FROM="no-reply@uxbox.io"
+      # STMP setup
+      - UXBOX_SMTP_HOST="localhost"
+      - UXBOX_SMTP_PORT=25
+      - UXBOX_SMTP_USER="uxbox"
+      - UXBOX_SMTP_PASSWORD="youshouldoverwritethiswithsomethingelse"
+      - UXBOX_SMTP_SSL=false
+      - UXBOX_SMTP_TLS=false
+      - UXBOX_SMTP_ENABLED=false
 
   uxbox_frontend:
     build: ./
-    #image: monogramm/uxbox:frontend
+    #image: monogramm/docker-uxbox-frontend:latest
     container_name: uxbox_frontend
     #hostname: uxbox.io
     #restart: always
-    #depends_on:
-    #  - uxbox_backend
+    depends_on:
+      - uxbox_backend
     ports:
       - 80:80
     volumes:
       #- frontend_data:/usr/share/nginx/html
       - backend_data:/srv/uxbox/resources:ro
+      # If you want, you can overwrite the provided default NGINX config
+      #- ./nginx/conf.d/default.conf:/etc/nginx/conf.d/default.conf
+      # You can also add certificates for SSL connection
+      #- ./nginx/server.crt:/etc/nginx/keys/server.crt
+      #- ./nginx/server.key:/etc/nginx/keys/server.key
       - /etc/localtime:/etc/localtime:ro
       - /etc/timezone:/etc/timezone:ro
     environment:
-      #- UXBOX_CONFIG_URL="http://localhost:6060/api/"
-      - UXBOX_CONFIG_URL="http://uxbox.io/api/"
+      # Only used at build time
+      - UXBOX_CONFIG_URL="/api/"
