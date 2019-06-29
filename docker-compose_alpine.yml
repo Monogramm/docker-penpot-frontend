@@ -85,4 +85,5 @@ services:
       - /etc/timezone:/etc/timezone:ro
     environment:
       # Only used at build time
-      - UXBOX_CONFIG_URL="/api/"
+      - UXBOX_API_URL="/api"
+      - UXBOX_VIEW_URL="/view/"
