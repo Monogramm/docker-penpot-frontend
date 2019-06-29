@@ -1,9 +1,8 @@
 FROM monogramm/docker-uxbox-builder:latest
 
 ENV UXBOX_VERSION=master \
-    UXBOX_CONFIG_URL="/api" \
-    UXBOX_DEMO=false \
-    UXBOX_DEBUG=false
+    UXBOX_API_URL="/api" \
+    UXBOX_VIEW_URL="/view/"
 
 # Download source from github
 ADD https://github.com/uxbox/uxbox/archive/${UXBOX_VERSION}.tar.gz /tmp/uxbox.tar.gz
