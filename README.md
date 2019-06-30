@@ -43,8 +43,8 @@ The following environment variables are also honored for configuring your UXBOX 
 -	`-e UXBOX_DEBUG=...` (not defined, setting any value will activate debug mode)
 
 Available at runtime:
--	`-e LANG=...` (defaults to en_US.UTF-8)
--	`-e LC_ALL=...` (defaults to C.UTF-8)
+-	`-e LANG=...` (defaults to `en_US.UTF-8`)
+-	`-e LC_ALL=...` (defaults to `C.UTF-8`)
 
 # Questions / Issues
 If you got any questions or problems using the image, please visit our [Github Repository](https://github.com/Monogramm/docker-uxbox-frontend) and write an issue.
