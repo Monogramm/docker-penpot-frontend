@@ -27,8 +27,11 @@ UXBOX is The Open-Source prototyping tool.
 
 https://hub.docker.com/r/monogramm/docker-uxbox-frontend/
 
-* `alpine` `latest`
-* `mainline`
+* Branch `master`
+    * `alpine` `latest`
+    * `mainline`
+* Branch `develop`
+    * `develop-alpine` `develop`
 
 ## How to run this image ?
 

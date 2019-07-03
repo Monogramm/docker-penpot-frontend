@@ -33,6 +33,7 @@ dockerRepo="monogramm/docker-uxbox-frontend"
 
 latests=(
 	master
+	develop
 )
 
 # Remove existing images

@@ -28,5 +28,7 @@ notifications:
   email: false
 
 env: # Environments
+    - VERSION=develop VARIANT=alpine
+    - VERSION=develop VARIANT=mainline
     - VERSION=master VARIANT=alpine
     - VERSION=master VARIANT=mainline
