@@ -19,7 +19,7 @@ RUN set -ex; \
     cd /home/uxbox/frontend; \
     rm -f Dockerfile; \
     rm -rf ./dist ./node_modules; \
-    ./scripts/build-release.sh
+    ./scripts/build-production.sh
 
 
 
