@@ -60,18 +60,20 @@ for latest in "${latests[@]}"; do
 			dir="images/$version/$variant"
 			mkdir -p "$dir"
 
+			# Copy files.
 			template="Dockerfile-${base[$variant]}.template"
 			cp "$template" "$dir/Dockerfile"
+
+			cp ".dockerignore" "$dir/.dockerignore"
+			cp "docker-.env" "$dir/.env"
+			cp "docker-compose_${compose[$variant]}.yml" "$dir/docker-compose.yml"
+			cp -rf ./docker-nginx "$dir/nginx"
 
 			# Replace the variables.
 			sed -ri -e '
 				s/%%VARIANT%%/'"$variant"'/g;
 				s/%%VERSION%%/'"$latest"'/g;
 			' "$dir/Dockerfile"
-
-			cp ".dockerignore" "$dir/.dockerignore"
-			cp "docker-compose_${compose[$variant]}.yml" "$dir/docker-compose.yml"
-			cp -rf ./docker-nginx "$dir/nginx"
 
 			travisEnv='\n    - VERSION='"$version"' VARIANT='"$variant$travisEnv"
 
