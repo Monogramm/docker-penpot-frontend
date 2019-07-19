@@ -43,7 +43,7 @@ services:
       - UXBOX_DATABASE_PORT=5432
       - UXBOX_DATABASE_NAME="$UXBOX_DB_NAME"
       - UXBOX_DATABASE_USERNAME="$UXBOX_DB_LOGIN"
-      - UXBOX_DATABASE_PASSWORD="$UXBOX_DB_PWD"
+      - UXBOX_DATABASE_PASSWORD="$UXBOX_DB_PASSWD"
       # Media setup
       - UXBOX_MEDIA_DIRECTORY="resources/public/media"
       - UXBOX_MEDIA_URI="/media/"
