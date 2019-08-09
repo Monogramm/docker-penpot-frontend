@@ -10,6 +10,7 @@ services:
     image: postgres:alpine
     container_name: uxbox_db
     restart: always
+    stop_signal: SIGINT
     ports:
       - 5432:5432
     volumes:
