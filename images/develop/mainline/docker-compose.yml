@@ -13,6 +13,7 @@ services:
       - /etc/localtime:/etc/localtime:ro
       - /etc/timezone:/etc/timezone:ro
     environment:
+      - POSTGRES_INITDB_ARGS="--data-checksums"
       - POSTGRES_DB=$UXBOX_DB_NAME
       - POSTGRES_USER=$UXBOX_DB_LOGIN
       - POSTGRES_PASSWORD=$UXBOX_DB_PASSWD
@@ -28,6 +29,7 @@ services:
       - 6060:6060
     volumes:
       - /srv/uxbox/backend/resources:/srv/uxbox/resources
+      - /srv/uxbox/backend/.m2:/root/.m2
       - /etc/localtime:/etc/localtime:ro
       - /etc/timezone:/etc/timezone:ro
     environment:
