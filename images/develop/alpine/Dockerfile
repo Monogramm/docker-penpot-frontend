@@ -28,8 +28,8 @@ RUN set -ex; \
     sed -i \
         -e "s|'common/dependencies/uxbox-light'|'common/dependencies/uxbox-${UXBOX_THEME}'|g" \
         resources/styles/view.scss; \
-    [ -f ./scripts/build-release.sh ] && ./scripts/build-release.sh; \
-    [ -f ./scripts/build-dist.sh ] && ./scripts/build-dist.sh
+    [ ! -f ./scripts/build-release.sh ] || ./scripts/build-release.sh; \
+    [ ! -f ./scripts/build-dist.sh ] || ./scripts/build-dist.sh
 
 
 
