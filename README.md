@@ -37,13 +37,14 @@ https://hub.docker.com/r/monogramm/docker-uxbox-frontend/
 The following environment variables are also honored for configuring your UXBOX instance:
 
 **Only available at build time!**
--	`-e UXBOX_CONFIG_URL=...` (defaults to http://127.0.0.1:6060/api)
--	`-e UXBOX_DEMO=...` (defaults to false)
--	`-e UXBOX_DEBUG=...` (defaults to false)
+-	`-e UXBOX_CONFIG_URL=...` (defaults to `http://127.0.0.1:6060/api`)
+-	`-e UXBOX_DEMO=...` (defaults to `false`)
+-	`-e UXBOX_DEBUG=...` (defaults to `false`)
+-	`-e UXBOX_THEME=...` (defaults to `light`)
 
 Available at runtime:
--	`-e LANG=...` (defaults to en_US.UTF-8)
--	`-e LC_ALL=...` (defaults to C.UTF-8)
+-	`-e LANG=...` (defaults to `en_US.UTF-8`)
+-	`-e LC_ALL=...` (defaults to `C.UTF-8`)
 
 # Questions / Issues
 If you got any questions or problems using the image, please visit our [Github Repository](https://github.com/Monogramm/docker-uxbox-frontend) and write an issue.
