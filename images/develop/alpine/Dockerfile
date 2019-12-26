@@ -2,7 +2,7 @@ FROM monogramm/docker-uxbox-builder:latest
 
 ARG UXBOX_THEME=light
 
-ENV UXBOX_VERSION=%%VERSION%% \
+ENV UXBOX_VERSION=develop \
     UXBOX_API_URL="/api" \
     UXBOX_VIEW_URL="/view/" \
     UXBOX_DEBUG=false
@@ -34,7 +34,7 @@ RUN set -ex; \
 
 
 # Once application has been built, prepare production image
-FROM nginx:%%VARIANT%%
+FROM nginx:alpine
 
 LABEL maintainer="Monogramm Maintainers <opensource at monogramm dot io>"
 

@@ -27,12 +27,13 @@ function version_greater_or_equal() {
 
 dockerRepo="monogramm/docker-uxbox-frontend"
 # Retrieve automatically the latest versions (when release available)
-#latests=( $( curl -fsSL 'https://api.github.com/repos/uxbox/uxbox-frontend/tags' |tac|tac| \
+#latests=( $( curl -fsSL 'https://api.github.com/repos/uxbox/uxbox/tags' |tac|tac| \
 #	grep -oE '[[:digit:]]+\.[[:digit:]]+\.[[:digit:]]+' | \
 #	sort -urV ) )
 
 latests=(
 	master
+	develop
 )
 
 # Remove existing images

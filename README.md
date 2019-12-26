@@ -27,8 +27,11 @@ UXBOX is The Open-Source prototyping tool.
 
 https://hub.docker.com/r/monogramm/docker-uxbox-frontend/
 
-* `alpine` `latest`
-* `mainline`
+* Branch `master`
+    * `alpine` `latest`
+    * `mainline`
+* Branch `develop`
+    * `develop-alpine` `develop`
 
 ## How to run this image ?
 
@@ -37,9 +40,10 @@ https://hub.docker.com/r/monogramm/docker-uxbox-frontend/
 The following environment variables are also honored for configuring your UXBOX instance:
 
 **Only available at build time!**
--	`-e UXBOX_CONFIG_URL=...` (defaults to `http://127.0.0.1:6060/api`)
--	`-e UXBOX_DEMO=...` (defaults to `false`)
--	`-e UXBOX_DEBUG=...` (defaults to `false`)
+-	`-e UXBOX_API_URL=...` (defaults to `/api`)
+-	`-e UXBOX_VIEW_URL=...` (defaults to `/view/`)
+-	`-e UXBOX_DEMO=...` (not defined, setting any value will activate demo mode)
+-	`-e UXBOX_DEBUG=...` (not defined, setting any value will activate debug mode)
 -	`-e UXBOX_THEME=...` (defaults to `light`)
 
 Available at runtime:

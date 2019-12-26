@@ -2,10 +2,9 @@ FROM monogramm/docker-uxbox-builder:latest
 
 ARG UXBOX_THEME=light
 
-ENV LEIN_ROOT=TRUE \
-    UXBOX_VERSION=master \
-    UXBOX_CONFIG_URL="/api" \
-    UXBOX_DEMO=false \
+ENV UXBOX_VERSION=master \
+    UXBOX_API_URL="/api" \
+    UXBOX_VIEW_URL="/view/" \
     UXBOX_DEBUG=false
 
 # Download source from github
@@ -18,26 +17,19 @@ RUN set -ex; \
     cd /home/uxbox; \
     tar -xzf /tmp/uxbox.tar.gz; \
     rm -f /tmp/uxbox.tar.gz; \
-    cd /home/uxbox/uxbox-${UXBOX_VERSION}/frontend; \
+    mv /home/uxbox/uxbox-${UXBOX_VERSION}/frontend /home/uxbox/; \
+    rm -rf /home/uxbox/uxbox-${UXBOX_VERSION}; \
+    cd /home/uxbox/frontend; \
     rm -f Dockerfile; \
     rm -rf ./dist ./node_modules; \
-    sed -i \
-        -e 's|"uxbox.config.url" ".*"|"uxbox.config.url" "${UXBOX_CONFIG_URL}"|g' \
-        scripts/figwheel.clj; \
-    sed -i \
-        -e 's|url ".*")|url "${UXBOX_CONFIG_URL}")|g' \
-        src/uxbox/config.cljs; \
     sed -i \
         -e "s|'common/dependencies/uxbox-light'|'common/dependencies/uxbox-${UXBOX_THEME}'|g" \
         resources/styles/main.scss; \
     sed -i \
         -e "s|'common/dependencies/uxbox-light'|'common/dependencies/uxbox-${UXBOX_THEME}'|g" \
         resources/styles/view.scss; \
-    npm install; \
-    npm run prod; \
-    bash -c "/home/uxbox/frontend/scripts/dist-main"; \
-    bash -c "/home/uxbox/frontend/scripts/dist-view"; \
-    bash -c "/home/uxbox/frontend/scripts/dist-worker"
+    [ -f ./scripts/build-release.sh ] && ./scripts/build-release.sh; \
+    [ -f ./scripts/build-dist.sh ] && ./scripts/build-dist.sh
 
 
 
