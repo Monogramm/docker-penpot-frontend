@@ -1,9 +1,11 @@
 FROM monogramm/docker-uxbox-builder:latest
 
 ARG VERSION=%%VERSION%%
+ARG UXBOX_THEME=light
 
 ENV UXBOX_API_URL="/api" \
-    UXBOX_VIEW_URL="/view/"
+    UXBOX_VIEW_URL="/view/" \
+    UXBOX_DEBUG=false
 
 # Download source from github
 ADD https://github.com/uxbox/uxbox/archive/${VERSION}.tar.gz /tmp/uxbox.tar.gz
@@ -20,7 +22,14 @@ RUN set -ex; \
     cd /home/uxbox/frontend; \
     rm -f Dockerfile; \
     rm -rf ./dist ./node_modules; \
-    ./scripts/build-dist.sh
+    sed -i \
+        -e "s|'common/dependencies/uxbox-light'|'common/dependencies/uxbox-${UXBOX_THEME}'|g" \
+        resources/styles/main.scss; \
+    sed -i \
+        -e "s|'common/dependencies/uxbox-light'|'common/dependencies/uxbox-${UXBOX_THEME}'|g" \
+        resources/styles/view.scss; \
+    [ ! -f ./scripts/build-release.sh ] || ./scripts/build-release.sh; \
+    [ ! -f ./scripts/build-dist.sh ] || ./scripts/build-dist.sh
 
 
 
