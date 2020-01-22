@@ -1,5 +1,5 @@
+os: linux
 dist: trusty
-sudo: required
 
 services: docker
 
@@ -15,13 +15,27 @@ before_script:
 
 script:
   - cd "$dir"
+  # Test container build
   - docker-compose build
   - docker images
+  # Test container run
   - travis_retry docker-compose up -d && sleep 300
   - docker-compose ps
-  - docker-compose logs
+  - docker-compose logs "uxbox_db"
   #- docker-compose ps "uxbox_db" | grep "Up"
+  - docker-compose logs "uxbox_backend"
   #- docker-compose ps "uxbox_backend" | grep "Up"
+  - docker-compose logs "uxbox_frontend"
+  - docker-compose ps "uxbox_frontend" | grep "Up"
+  # Test container restart
+  - docker-compose down
+  - travis_retry docker-compose up -d && sleep 300
+  - docker-compose ps
+  - docker-compose logs "uxbox_db"
+  #- docker-compose ps "uxbox_db" | grep "Up"
+  - docker-compose logs "uxbox_backend"
+  #- docker-compose ps "uxbox_backend" | grep "Up"
+  - docker-compose logs "uxbox_frontend"
   - docker-compose ps "uxbox_frontend" | grep "Up"
 
 notifications:
