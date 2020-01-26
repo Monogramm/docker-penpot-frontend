@@ -19,7 +19,7 @@ script:
   - docker-compose build
   - docker images
   # Test container run
-  - travis_retry docker-compose up -d && sleep 300
+  - travis_retry travis_wait 60 docker-compose up -d && sleep 300
   - docker-compose ps
   - docker-compose logs "uxbox_db"
   #- docker-compose ps "uxbox_db" | grep "Up"
@@ -29,7 +29,7 @@ script:
   - docker-compose ps "uxbox_frontend" | grep "Up"
   # Test container restart
   - docker-compose down
-  - travis_retry docker-compose up -d && sleep 300
+  - travis_retry travis_wait 60 docker-compose up -d && sleep 300
   - docker-compose ps
   - docker-compose logs "uxbox_db"
   #- docker-compose ps "uxbox_db" | grep "Up"
