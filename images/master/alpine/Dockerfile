@@ -18,6 +18,7 @@ RUN set -ex; \
     tar -xzf /tmp/uxbox.tar.gz; \
     rm -f /tmp/uxbox.tar.gz; \
     mv /home/uxbox/uxbox-${VERSION}/frontend /home/uxbox/; \
+    [ ! -d /home/uxbox/uxbox-${VERSION}/common ] || mv /home/uxbox/uxbox-${VERSION}/common /home/uxbox/frontend/src/uxbox/; \
     rm -rf /home/uxbox/uxbox-${VERSION}; \
     cd /home/uxbox/frontend; \
     rm -f Dockerfile; \
@@ -28,8 +29,7 @@ RUN set -ex; \
     sed -i \
         -e "s|'common/dependencies/uxbox-light'|'common/dependencies/uxbox-${UXBOX_THEME}'|g" \
         resources/styles/view.scss; \
-    [ -f ./build/package.json ] && cp ./build/package.json .; \
-    npm install; \
+    [ -f ./build/package.json ] && cp ./build/package.json . && npm install; \
     [ ! -f ./scripts/build-release.sh ] || ./scripts/build-release.sh; \
     [ ! -f ./scripts/build-app.sh ] || ./scripts/build-app.sh
 
