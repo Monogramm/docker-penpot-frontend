@@ -29,12 +29,21 @@ RUN set -ex; \
         -e "s|'common/dependencies/uxbox-light'|'common/dependencies/uxbox-${UXBOX_THEME}'|g" \
         resources/styles/view.scss; \
     [ ! -f ./scripts/build-release.sh ] || ./scripts/build-release.sh; \
-    [ ! -f ./scripts/build-dist.sh ] || ./scripts/build-dist.sh
+    [ ! -f ./scripts/build-app.sh ] || ./scripts/build-app.sh
 
 
 
 # Once application has been built, prepare production image
 FROM nginx:mainline
+
+ENV LANG=en_US.UTF-8 \
+    LC_ALL=C.UTF-8
+
+# Copy built app to www root
+COPY --from=0 /home/uxbox/frontend/dist /usr/share/nginx/html
+
+# NGINX configurations
+COPY ./nginx/conf.d /etc/nginx/conf.d
 
 ARG VERSION=develop
 ARG VCS_REF
@@ -51,12 +60,3 @@ LABEL maintainer="Monogramm Maintainers <opensource at monogramm dot io>" \
     org.label-schema.vendor="UXBOX" \
     org.label-schema.version=$VERSION \
     org.label-schema.schema-version="1.0"
-
-ENV LANG=en_US.UTF-8 \
-    LC_ALL=C.UTF-8
-
-# Copy built app to www root
-COPY --from=0 /home/uxbox/frontend/dist /usr/share/nginx/html
-
-# NGINX configurations
-COPY ./nginx/conf.d /etc/nginx/conf.d
