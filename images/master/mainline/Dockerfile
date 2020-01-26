@@ -18,7 +18,7 @@ RUN set -ex; \
     tar -xzf /tmp/uxbox.tar.gz; \
     rm -f /tmp/uxbox.tar.gz; \
     mv /home/uxbox/uxbox-${VERSION}/frontend /home/uxbox/; \
-    [ ! -d /home/uxbox/uxbox-${VERSION}/common ] || mv /home/uxbox/uxbox-${VERSION}/common /home/uxbox/frontend/src/uxbox/; \
+    [ ! -d /home/uxbox/uxbox-${VERSION}/common ] || mv /home/uxbox/uxbox-${VERSION}/common /home/uxbox/; \
     rm -rf /home/uxbox/uxbox-${VERSION}; \
     cd /home/uxbox/frontend; \
     rm -f Dockerfile; \
