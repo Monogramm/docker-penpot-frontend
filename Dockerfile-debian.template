@@ -30,7 +30,7 @@ RUN set -ex; \
         -e "s|'common/dependencies/uxbox-light'|'common/dependencies/uxbox-${UXBOX_THEME}'|g" \
         resources/styles/view.scss; \
     [ -f ./build/package.json ] && cp ./build/package.json . && npm install; \
-    [ ! -f ./scripts/build-release.sh ] || ./scripts/build-release.sh; \
+    [ ! -f ./scripts/build-release.sh ] || ./scripts/build-release.sh && mkdir -p ./target && mv ./dist ./target/dist; \
     [ ! -f ./scripts/build-app.sh ] || ./scripts/build-app.sh
 
 
@@ -42,7 +42,7 @@ ENV LANG=en_US.UTF-8 \
     LC_ALL=C.UTF-8
 
 # Copy built app to www root
-COPY --from=0 /home/uxbox/frontend/dist /usr/share/nginx/html
+COPY --from=0 /home/uxbox/frontend/target/dist /usr/share/nginx/html
 
 # NGINX configurations
 COPY ./nginx/conf.d /etc/nginx/conf.d
