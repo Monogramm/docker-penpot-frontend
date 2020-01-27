@@ -30,8 +30,8 @@ RUN set -ex; \
         -e "s|'common/dependencies/uxbox-light'|'common/dependencies/uxbox-${UXBOX_THEME}'|g" \
         resources/styles/view.scss; \
     [ -f ./build/package.json ] && cp ./build/package.json . && npm install; \
-    [ ! -f ./scripts/build-release.sh ] || ./scripts/build-release.sh && mkdir -p ./target && mv ./dist ./target/dist; \
-    [ ! -f ./scripts/build-app.sh ] || ./scripts/build-app.sh
+    [ -f ./scripts/build-release.sh ] && ./scripts/build-release.sh && mkdir -p ./target && mv ./dist ./target/dist; \
+    [ -f ./scripts/build-app.sh ] && ./scripts/build-app.sh
 
 
 
