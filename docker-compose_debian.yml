@@ -7,7 +7,7 @@ services:
     restart: always
     stop_signal: SIGINT
     healthcheck:
-      test: ["CMD", "pg_isready", "-U", "${UXBOX_DB_LOGIN}"]
+      test: ["CMD", "pg_isready", "-U", "${UXBOX_DB_LOGIN}", "-d", "${UXBOX_DB_NAME}"]
     ports:
       - "5432:5432"
     volumes:
