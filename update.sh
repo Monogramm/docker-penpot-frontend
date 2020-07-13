@@ -46,22 +46,21 @@ travisEnv=
 for latest in "${latests[@]}"; do
 	version=$(echo "$latest" | cut -d. -f1-2)
 
-	if [ -d "$version" ]; then
-		continue
-	fi
-
 	# Only add versions >= "$min_version"
 	if version_greater_or_equal "$version" "$min_version"; then
 
 		for variant in "${variants[@]}"; do
-			echo "updating $latest [$version-$variant]"
-
 			# Create the version directory with a Dockerfile.
 			dir="images/$version/$variant"
+			if [ -d "$dir" ]; then
+				continue
+			fi
+
+			echo "updating $latest [$version-$variant]"
 			mkdir -p "$dir"
 
 			# Copy files.
-			template="Dockerfile-${base[$variant]}.template"
+			template="Dockerfile.${base[$variant]}.template"
 			cp "$template" "$dir/Dockerfile"
 
 			cp -r "hooks/" "$dir/"
