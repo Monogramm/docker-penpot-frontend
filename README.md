@@ -13,7 +13,7 @@
 
 Docker image for UXBOX Frontend.
 
-:construction: **This image is still in development!**
+🚧 **This image is still in development!**
 
 ## What is UXBOX ?
 

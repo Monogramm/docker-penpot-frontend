@@ -1,4 +1,4 @@
-FROM monogramm/docker-uxbox-builder:latest
+FROM monogramm/docker-uxbox-builder:latest as builder
 
 ARG VERSION=%%VERSION%%
 ARG UXBOX_THEME=light
@@ -42,7 +42,7 @@ ENV LANG=en_US.UTF-8 \
     LC_ALL=C.UTF-8
 
 # Copy built app to www root
-COPY --from=0 /home/uxbox/frontend/target/dist /usr/share/nginx/html
+COPY --from=builder /home/uxbox/frontend/target/dist /usr/share/nginx/html
 
 # NGINX configurations
 COPY ./nginx/conf.d /etc/nginx/conf.d
