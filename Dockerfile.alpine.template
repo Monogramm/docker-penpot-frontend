@@ -1,7 +1,7 @@
 FROM monogramm/docker-uxbox-builder:latest as builder
 
 ARG VERSION=%%VERSION%%
-ARG UXBOX_THEME=light
+ARG UXBOX_THEME=default
 
 ENV UXBOX_API_URL="/api" \
     UXBOX_VIEW_URL="/view/" \
@@ -23,12 +23,6 @@ RUN set -ex; \
     cd /home/uxbox/frontend; \
     rm -f Dockerfile; \
     rm -rf ./dist ./node_modules; \
-    sed -i \
-        -e "s|'common/dependencies/uxbox-light'|'common/dependencies/uxbox-${UXBOX_THEME}'|g" \
-        resources/styles/main.scss; \
-    sed -i \
-        -e "s|'common/dependencies/uxbox-light'|'common/dependencies/uxbox-${UXBOX_THEME}'|g" \
-        resources/styles/view.scss; \
     [ -f ./build/package.json ] && cp ./build/package.json . && npm install; \
     [ -f ./scripts/build-release.sh ] && ./scripts/build-release.sh && mkdir -p ./target && mv ./dist ./target/dist; \
     [ ! -f ./scripts/build-app.sh ] || ./scripts/build-app.sh
