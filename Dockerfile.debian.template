@@ -21,11 +21,14 @@ RUN set -ex; \
     [ ! -d /home/uxbox/uxbox-${VERSION}/common ] || mv /home/uxbox/uxbox-${VERSION}/common /home/uxbox/; \
     rm -rf /home/uxbox/uxbox-${VERSION}; \
     cd /home/uxbox/frontend; \
-    rm -f Dockerfile; \
-    rm -rf ./dist ./node_modules; \
-    [ -f ./build/package.json ] && cp ./build/package.json . && npm install; \
-    [ -f ./scripts/build-release.sh ] && ./scripts/build-release.sh && mkdir -p ./target && mv ./dist ./target/dist; \
-    [ ! -f ./scripts/build-app.sh ] || ./scripts/build-app.sh
+    yarn install; \
+    export NODE_ENV=production; \
+    npx gulp clean; \
+    npx shadow-cljs release main --config-merge "{:release-version \"${VERSION}\"}"; \
+    npx gulp build; \
+    npx gulp dist:clean; \
+    npx gulp dist:copy; \
+    npx gulp dist:gzip;
 
 
 
