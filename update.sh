@@ -61,13 +61,13 @@ for latest in "${latests[@]}"; do
 
 			# Copy files.
 			template="Dockerfile.${base[$variant]}.template"
-			cp "$template" "$dir/Dockerfile"
+			cp "template/$template" "$dir/Dockerfile"
 
-			cp -r "hooks/" "$dir/"
-			cp ".dockerignore" "$dir/.dockerignore"
-			cp "docker-.env" "$dir/.env"
-			cp "docker-compose_${compose[$variant]}.yml" "$dir/docker-compose.yml"
-			cp -rf ./docker-nginx "$dir/nginx"
+			cp -r "template/hooks/" "$dir/"
+			cp "template/.dockerignore" "$dir/.dockerignore"
+			cp "template/.env" "$dir/.env"
+			cp "template/docker-compose_${compose[$variant]}.yml" "$dir/docker-compose.yml"
+			cp -rf 'template/nginx' "$dir/nginx"
 
 			# Replace the variables.
 			sed -ri -e '

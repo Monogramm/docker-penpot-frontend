@@ -1,6 +1,6 @@
 FROM monogramm/docker-uxbox-builder:latest as builder
 
-ARG VERSION=develop
+ARG VERSION=%%VERSION%%
 ARG UXBOX_THEME=default
 
 ENV UXBOX_API_URL="/api" \
@@ -30,7 +30,7 @@ RUN set -ex; \
 
 
 # Once application has been built, prepare production image
-FROM nginx:mainline
+FROM nginx:%%VARIANT%%
 
 ENV LANG=en_US.UTF-8 \
     LC_ALL=C.UTF-8
@@ -41,7 +41,7 @@ COPY --from=builder /home/uxbox/frontend/target/dist /usr/share/nginx/html
 # NGINX configurations
 COPY ./nginx/conf.d /etc/nginx/conf.d
 
-ARG VERSION=develop
+ARG VERSION=%%VERSION%%
 ARG VCS_REF
 ARG BUILD_DATE
 
