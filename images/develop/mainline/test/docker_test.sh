@@ -11,8 +11,8 @@ sleep 60
 echo "Checking main containers are reachable..."
 if ! sudo ping -c 10 -q "${DOCKER_TEST_CONTAINER}" ; then
     echo 'Main container is not responding!'
-    echo 'Check the following logs for details:'
-    tail -n 100 logs/*.log
+    #echo 'Check the following logs for details:'
+    #tail -n 100 logs/*.log
     exit 1
 fi
 
