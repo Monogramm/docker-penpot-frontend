@@ -1,6 +1,26 @@
 version: '2.3'
 
 services:
+  # https://docs.docker.com/docker-hub/builds/automated-testing/
+  sut:
+    build:
+      context: ./test
+      dockerfile: Dockerfile
+    command: sh /docker_test.sh
+    depends_on:
+      - uxbox_db
+      - uxbox_mailer
+      - uxbox_backend
+      - uxbox_frontend
+    environment:
+      - DOCKER_TEST_CONTAINER=uxbox_frontend
+    volumes_from:
+      - uxbox_backend
+      - uxbox_frontend
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /etc/timezone:/etc/timezone:ro
+
   uxbox_db:
     image: postgres:latest
     container_name: uxbox_db
@@ -39,7 +59,10 @@ services:
     container_name: uxbox_backend
     #restart: always
     depends_on:
-      - uxbox_db
+      uxbox_db:
+        condition: service_healthy
+      uxbox_mailer:
+        condition: service_started
     ports:
       - "6060:6060"
     volumes:
