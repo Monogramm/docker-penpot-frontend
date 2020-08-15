@@ -61,7 +61,7 @@ services:
 
   uxbox_backend:
     #build: ./
-    image: monogramm/docker-uxbox-backend:latest
+    image: monogramm/docker-uxbox-backend:develop
     container_name: uxbox_backend
     #restart: always
     depends_on:
