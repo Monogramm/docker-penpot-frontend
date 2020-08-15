@@ -69,8 +69,14 @@ services:
         condition: service_healthy
       uxbox_mailer:
         condition: service_started
+      uxbox_redis:
+        condition: service_healthy
     ports:
+      - "3447:3447"
+      - "3448:3448"
+      - "3449:3449"
       - "6060:6060"
+      - "9090:9090"
     volumes:
       - backend_data:/srv/uxbox/resources
       - backend_m2:/root/.m2
@@ -87,6 +93,8 @@ services:
       - UXBOX_DATABASE_NAME=${UXBOX_DB_NAME}
       - UXBOX_DATABASE_USERNAME=${UXBOX_DB_LOGIN}
       - UXBOX_DATABASE_PASSWORD=${UXBOX_DB_PASSWD}
+      # Redis setup
+      - UXBOX-REDIS-URI=${UXBOX_REDIS_URI}
       # Media setup
       - UXBOX_MEDIA_DIRECTORY=resources/public/media
       - UXBOX_MEDIA_URI=/media/
@@ -110,6 +118,14 @@ services:
       - UXBOX_REGISTRATION_ENABLED=true
       - UXBOX_SECRET="${UXBOX_SECRET}
 
+  uxbox_redis:
+    image: redis:6.0-rc3
+    hostname: $UXBOX_WEB_DOMAIN
+    container_name: uxbox_redis
+    restart: always
+    ports:
+      - 6379:6379
+
   uxbox_frontend:
     build: ./
     #image: monogramm/docker-uxbox-frontend:latest
@@ -131,6 +147,11 @@ services:
       - /etc/localtime:/etc/localtime:ro
       - /etc/timezone:/etc/timezone:ro
     environment:
+      - UXBOX_PUBLIC_URI=http://localhost:3449/
+      - UXBOX_GOOGLE_CLIENT_ID=true \
+      - UXBOX_LOGIN_WITH_LDAP=false \
       # Only used at build time
-      - UXBOX_API_URL="/api"
-      - UXBOX_VIEW_URL="/view/"
+      - UXBOX_DEMO_WARNING=true
+      - UXBOX_DEPLOY_DATE=""
+      - UXBOX_DEPLOY_COMMIT=""
+      - UXBOX_DEBUG=false

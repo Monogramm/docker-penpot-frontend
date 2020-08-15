@@ -3,9 +3,14 @@ FROM monogramm/docker-uxbox-builder:latest as builder
 ARG VERSION=master
 ARG UXBOX_THEME=default
 
-ENV UXBOX_API_URL="/api" \
-    UXBOX_VIEW_URL="/view/" \
-    UXBOX_DEBUG=false
+ENV UXBOX_PUBLIC_URI=http://localhost:3449/ \
+    UXBOX_DEBUG=false \
+    UXBOX_GOOGLE_CLIENT_ID=true \
+    UXBOX_DEMO_WARNING=true \
+    UXBOX_DEPLOY_DATE="" \
+    UXBOX_DEPLOY_COMMIT="" \
+    UXBOX_LOGIN_WITH_LDAP=false \
+    TAG=${VERSION}
 
 # Download source from github
 ADD https://github.com/uxbox/uxbox/archive/${VERSION}.tar.gz /tmp/uxbox.tar.gz
@@ -15,18 +20,12 @@ ADD https://github.com/uxbox/uxbox/archive/${VERSION}.tar.gz /tmp/uxbox.tar.gz
 RUN set -ex; \
     mkdir -p /home/uxbox; \
     cd /home/uxbox; \
-    tar -xzf /tmp/uxbox.tar.gz; \
-    rm -f /tmp/uxbox.tar.gz; \
-    mv /home/uxbox/uxbox-${VERSION}/frontend /home/uxbox/; \
-    [ ! -d /home/uxbox/uxbox-${VERSION}/common ] || mv /home/uxbox/uxbox-${VERSION}/common /home/uxbox/; \
-    rm -rf /home/uxbox/uxbox-${VERSION}; \
-    cd /home/uxbox/frontend; \
-    rm -f Dockerfile; \
-    rm -rf ./dist ./node_modules; \
-    [ -f ./build/package.json ] && cp ./build/package.json . && npm install; \
-    [ -f ./scripts/build-release.sh ] && ./scripts/build-release.sh && mkdir -p ./target && mv ./dist ./target/dist; \
-    [ ! -f ./scripts/build-app.sh ] || ./scripts/build-app.sh
+    tar -xzf /tmp/uxbox.tar.gz --strip=1; \
+    rm -f /tmp/uxbox.tar.gz;
 
+WORKDIR /home/uxbox/frontend
+
+RUN ./scripts/build-app.sh
 
 
 # Once application has been built, prepare production image
@@ -41,6 +40,11 @@ COPY --from=builder /home/uxbox/frontend/target/dist /usr/share/nginx/html
 # NGINX configurations
 COPY ./nginx/conf.d /etc/nginx/conf.d
 
+# Add entrypoint
+COPY ./entrypoint.sh /entrypoint.sh
+
+RUN chmod 755 /entrypoint.sh
+
 ARG VERSION=master
 ARG VCS_REF
 ARG BUILD_DATE
@@ -48,7 +52,7 @@ ARG BUILD_DATE
 LABEL maintainer="Monogramm Maintainers <opensource at monogramm dot io>" \
     version=$VERSION \
     org.label-schema.vcs-ref=$VCS_REF \
-    org.label-schema.vcs-url="https://github.com/Monogramm/docker-uxbox-backend" \
+    org.label-schema.vcs-url="https://github.com/Monogramm/docker-uxbox-frontend" \
     org.label-schema.build-date=$BUILD_DATE \
     org.label-schema.name="UXBOX (frontend) - The Open-Source prototyping tool" \
     org.label-schema.description="The open-source solution for design and prototyping" \
@@ -56,3 +60,6 @@ LABEL maintainer="Monogramm Maintainers <opensource at monogramm dot io>" \
     org.label-schema.vendor="UXBOX" \
     org.label-schema.version=$VERSION \
     org.label-schema.schema-version="1.0"
+
+
+ENTRYPOINT ["sh", "/entrypoint.sh"]
