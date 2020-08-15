@@ -67,6 +67,7 @@ for latest in "${latests[@]}"; do
 			cp -r "template/test/" "$dir/"
 			cp "template/.dockerignore" "$dir/.dockerignore"
 			cp "template/.env" "$dir/.env"
+			cp "template/entrypoint.sh" "$dir/entrypoint.sh"
 			cp "template/docker-compose_${compose[$variant]}.yml" "$dir/docker-compose.yml"
 			cp -rf 'template/nginx' "$dir/nginx"
 

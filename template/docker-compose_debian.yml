@@ -1,5 +1,11 @@
 version: '2.3'
 
+volumes:
+  db_data:
+  backend_data:
+  backend_m2:
+  frontend_data:
+
 services:
   # https://docs.docker.com/docker-hub/builds/automated-testing/
   sut:
@@ -31,7 +37,7 @@ services:
     ports:
       - "5432:5432"
     volumes:
-      - /srv/uxbox/db/data:/var/lib/postgresql/data
+      - db_data:/var/lib/postgresql/data
       - /etc/localtime:/etc/localtime:ro
       - /etc/timezone:/etc/timezone:ro
     environment:
@@ -63,11 +69,17 @@ services:
         condition: service_healthy
       uxbox_mailer:
         condition: service_started
+      uxbox_redis:
+        condition: service_healthy
     ports:
+      - "3447:3447"
+      - "3448:3448"
+      - "3449:3449"
       - "6060:6060"
+      - "9090:9090"
     volumes:
-      - /srv/uxbox/backend/resources:/srv/uxbox/resources
-      - /srv/uxbox/backend/.m2:/root/.m2
+      - backend_data:/srv/uxbox/resources
+      - backend_m2:/root/.m2
       - /etc/localtime:/etc/localtime:ro
       - /etc/timezone:/etc/timezone:ro
     environment:
@@ -81,6 +93,8 @@ services:
       - UXBOX_DATABASE_NAME=${UXBOX_DB_NAME}
       - UXBOX_DATABASE_USERNAME=${UXBOX_DB_LOGIN}
       - UXBOX_DATABASE_PASSWORD=${UXBOX_DB_PASSWD}
+      # Redis setup
+      - UXBOX-REDIS-URI=${UXBOX_REDIS_URI}
       # Media setup
       - UXBOX_MEDIA_DIRECTORY=resources/public/media
       - UXBOX_MEDIA_URI=/media/
@@ -104,6 +118,14 @@ services:
       - UXBOX_REGISTRATION_ENABLED=true
       - UXBOX_SECRET="${UXBOX_SECRET}
 
+  uxbox_redis:
+    image: redis:6.0-rc3
+    hostname: $UXBOX_WEB_DOMAIN
+    container_name: uxbox_redis
+    restart: always
+    ports:
+      - 6379:6379
+
   uxbox_frontend:
     build: ./
     #image: monogramm/docker-uxbox-frontend:latest
@@ -115,8 +137,8 @@ services:
     ports:
       - 80:80
     volumes:
-      #- /srv/uxbox/frontend/html:/usr/share/nginx/html
-      - /srv/uxbox/backend/resources/public:/srv/uxbox/resources/public:ro
+      #- frontend_data:/usr/share/nginx/html
+      - backend_data:/srv/uxbox/resources/public:ro
       # If you want, you can overwrite the provided default NGINX config
       #- ./nginx/conf.d/default.conf:/etc/nginx/conf.d/default.conf
       # You can also add certificates for SSL connection
@@ -125,6 +147,11 @@ services:
       - /etc/localtime:/etc/localtime:ro
       - /etc/timezone:/etc/timezone:ro
     environment:
+      - UXBOX_PUBLIC_URI=http://localhost:3449/
+      - UXBOX_GOOGLE_CLIENT_ID=true \
+      - UXBOX_LOGIN_WITH_LDAP=false \
       # Only used at build time
-      - UXBOX_API_URL="/api"
-      - UXBOX_VIEW_URL="/view/"
+      - UXBOX_DEMO_WARNING=true
+      - UXBOX_DEPLOY_DATE=""
+      - UXBOX_DEPLOY_COMMIT=""
+      - UXBOX_DEBUG=false
