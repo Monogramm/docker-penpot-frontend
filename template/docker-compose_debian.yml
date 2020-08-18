@@ -94,7 +94,7 @@ services:
       - UXBOX_DATABASE_USERNAME=${UXBOX_DB_LOGIN}
       - UXBOX_DATABASE_PASSWORD=${UXBOX_DB_PASSWD}
       # Redis setup
-      - UXBOX-REDIS-URI=${UXBOX_REDIS_URI}
+      - UXBOX_REDIS_URI=redis://uxbox_redis/0
       # Media setup
       - UXBOX_MEDIA_DIRECTORY=resources/public/media
       - UXBOX_MEDIA_URI=/media/
@@ -147,9 +147,10 @@ services:
       - /etc/localtime:/etc/localtime:ro
       - /etc/timezone:/etc/timezone:ro
     environment:
-      - UXBOX_PUBLIC_URI=http://localhost:3449/
-      - UXBOX_GOOGLE_CLIENT_ID=true \
-      - UXBOX_LOGIN_WITH_LDAP=false \
+      # No quotes here!
+      - UXBOX_PUBLIC_URI=http://localhost/
+      - UXBOX_GOOGLE_CLIENT_ID=true
+      - UXBOX_LOGIN_WITH_LDAP=false
       # Only used at build time
       - UXBOX_DEMO_WARNING=true
       - UXBOX_DEPLOY_DATE=""
