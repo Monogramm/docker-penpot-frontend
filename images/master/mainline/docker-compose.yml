@@ -70,7 +70,7 @@ services:
       uxbox_mailer:
         condition: service_started
       uxbox_redis:
-        condition: service_healthy
+        condition: service_started
     ports:
       - "3447:3447"
       - "3448:3448"
