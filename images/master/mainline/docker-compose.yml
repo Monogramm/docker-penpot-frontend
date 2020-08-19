@@ -122,6 +122,8 @@ services:
     image: redis:6.0-rc3
     hostname: $UXBOX_WEB_DOMAIN
     container_name: uxbox_redis
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
     restart: always
     ports:
       - 6379:6379
