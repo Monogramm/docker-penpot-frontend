@@ -27,11 +27,11 @@ echo 'Docker tests successful'
 # https://docs.docker.com/docker-hub/builds/automated-testing/
 ################################################################################
 
-# TODO Call UXBOX unit tests?
+# TODO Call PENPOT unit tests?
 
 
 ################################################################################
 # Success
-echo 'UXBOX app '${DOCKER_TEST_CONTAINER}' tests finished'
+echo 'PENPOT app '${DOCKER_TEST_CONTAINER}' tests finished'
 echo 'Check the CI reports and logs for details.'
 exit 0

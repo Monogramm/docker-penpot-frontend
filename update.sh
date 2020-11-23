@@ -25,9 +25,9 @@ function version_greater_or_equal() {
 	[[ "$(printf '%s\n' "$@" | sort -V | head -n 1)" != "$1" || "$1" == "$2" ]];
 }
 
-dockerRepo="monogramm/docker-uxbox-frontend"
+dockerRepo="monogramm/docker-penpot-frontend"
 # Retrieve automatically the latest versions (when release available)
-#latests=( $( curl -fsSL 'https://api.github.com/repos/uxbox/uxbox/tags' |tac|tac| \
+#latests=( $( curl -fsSL 'https://api.github.com/repos/penpot/penpot/tags' |tac|tac| \
 #	grep -oE '[[:digit:]]+\.[[:digit:]]+\.[[:digit:]]+' | \
 #	sort -urV ) )
 
@@ -82,7 +82,7 @@ for latest in "${latests[@]}"; do
 			if [[ $1 == 'build' ]]; then
 				tag="$version-$variant"
 				echo "Build Dockerfile for ${tag}"
-				docker build -t ${dockerRepo}:${tag} $dir
+				docker build -t "${dockerRepo}:${tag}" "$dir"
 			fi
 		done
 	fi

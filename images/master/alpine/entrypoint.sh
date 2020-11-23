@@ -7,35 +7,35 @@ log() {
 
 
 #########################################
-## UXBOX Front config
+## PENPOT Front config
 #########################################
 
 
 update_public_uri() {
-  if [ -n "$UXBOX_PUBLIC_URI" ]; then
-    log "Updating uxbox public uri: $UXBOX_PUBLIC_URI"
+  if [ -n "$PENPOT_PUBLIC_URI" ]; then
+    log "Updating penpot public uri: $PENPOT_PUBLIC_URI"
     sed -i \
-      -e 's|\\"publicURI\\":\\".*\\"|\\"publicURI\\":\\"$UXBOX_PUBLIC_URI\\"|g' \
+      -e 's|\\"publicURI\\":\\".*\\"|\\"publicURI\\":\\"$PENPOT_PUBLIC_URI\\"|g' \
       $1
   fi
 }
 
 
 update_google_client_id() {
-  if [ -n "$UXBOX_GOOGLE_CLIENT_ID" ]; then
-    log "Updating Google Client Id: $UXBOX_GOOGLE_CLIENT_ID"
+  if [ -n "$PENPOT_GOOGLE_CLIENT_ID" ]; then
+    log "Updating Google Client Id: $PENPOT_GOOGLE_CLIENT_ID"
     sed -i \
-      -e 's|\\"googleClientID\\":\\".*\\"|\\"googleClientID\\":\\"$UXBOX_GOOGLE_CLIENT_ID\\"|g' \
+      -e 's|\\"googleClientID\\":\\".*\\"|\\"googleClientID\\":\\"$PENPOT_GOOGLE_CLIENT_ID\\"|g' \
       $1
   fi
 }
 
 
 update_login_with_ldap() {
-  if [ -n "$UXBOX_LOGIN_WITH_LDAP" ]; then
-    log "Updating Login with LDAP: $UXBOX_LOGIN_WITH_LDAP"
+  if [ -n "$PENPOT_LOGIN_WITH_LDAP" ]; then
+    log "Updating Login with LDAP: $PENPOT_LOGIN_WITH_LDAP"
     sed -i \
-      -e 's|\\"loginWithLDAP\\":[^,} ]*|\\"loginWithLDAP\\":$UXBOX_LOGIN_WITH_LDAP|g' \
+      -e 's|\\"loginWithLDAP\\":[^,} ]*|\\"loginWithLDAP\\":$PENPOT_LOGIN_WITH_LDAP|g' \
       $1
   fi
 }
