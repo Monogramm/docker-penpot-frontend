@@ -19,7 +19,8 @@ script:
   - docker-compose build
   - docker images
   # Test container run
-  - travis_retry travis_wait 60 docker-compose up -d && sleep 300
+  - travis_retry travis_wait 60 docker-compose up -d
+  - docker-compose logs -f "sut"
   - docker-compose ps
   - docker-compose logs "penpot_db"
   #- docker-compose ps "penpot_db" | grep "Up"
@@ -27,11 +28,11 @@ script:
   #- docker-compose ps "penpot_backend" | grep "Up"
   - docker-compose logs "penpot_frontend"
   - docker-compose ps "penpot_frontend" | grep "Up"
-  - docker-compose logs "sut"
   - docker-compose ps "sut" | grep "Exit 0"
   # Test container restart
   - docker-compose down
-  - travis_retry travis_wait 60 docker-compose up -d && sleep 300
+  - travis_retry travis_wait 60 docker-compose up -d
+  - docker-compose logs -f "sut"
   - docker-compose ps
   - docker-compose logs "penpot_db"
   #- docker-compose ps "penpot_db" | grep "Up"
@@ -39,7 +40,6 @@ script:
   #- docker-compose ps "penpot_backend" | grep "Up"
   - docker-compose logs "penpot_frontend"
   - docker-compose ps "penpot_frontend" | grep "Up"
-  - docker-compose logs "sut"
   - docker-compose ps "sut" | grep "Exit 0"
 
 notifications:
