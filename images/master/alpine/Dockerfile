@@ -26,7 +26,8 @@ RUN set -ex; \
 
 WORKDIR /home/penpot/frontend
 
-RUN ./scripts/build-app.sh
+RUN set -ex; \
+    ./scripts/build.sh
 
 
 # Once application has been built, prepare production image

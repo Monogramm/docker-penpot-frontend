@@ -32,6 +32,6 @@ echo 'Docker tests successful'
 
 ################################################################################
 # Success
-echo 'PENPOT app '${DOCKER_TEST_CONTAINER}' tests finished'
+echo "Docker app '${DOCKER_TEST_CONTAINER}' tests finished"
 echo 'Check the CI reports and logs for details.'
 exit 0
