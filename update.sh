@@ -78,8 +78,8 @@ for latest in "${latests[@]}"; do
 			' "$dir/Dockerfile"
 
 			sed -ri -e '
-			s|DOCKER_TAG=.*|DOCKER_TAG='"$version"'|g;
-			s|DOCKER_REPO=.*|DOCKER_REPO='"$dockerRepo"'|g;
+				s|DOCKER_TAG=.*|DOCKER_TAG='"$version"'|g;
+				s|DOCKER_REPO=.*|DOCKER_REPO='"$dockerRepo"'|g;
 			' "$dir/hooks/run"
 
 			# Create a list of "alias" tags for DockerHub post_push
