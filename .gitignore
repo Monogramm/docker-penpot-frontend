@@ -1,0 +1,7 @@
+# IDE files
+sqltools_*
+.lsp/
+.idea
+
+# System Files
+Thumbs.db
