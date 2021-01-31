@@ -70,6 +70,7 @@ for latest in "${latests[@]}"; do
 			cp "template/entrypoint.sh" "$dir/entrypoint.sh"
 			cp "template/docker-compose_${compose[$variant]}.yml" "$dir/docker-compose.test.yml"
 			cp -rf 'template/nginx' "$dir/nginx"
+			cp "template/config.js" "$dir/config.js"
 
 			# Replace the variables.
 			sed -ri -e '

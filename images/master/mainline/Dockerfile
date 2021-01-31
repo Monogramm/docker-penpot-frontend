@@ -38,6 +38,9 @@ ENV LANG=en_US.UTF-8 \
 # Copy built app to www root
 COPY --from=builder /home/penpot/frontend/target/dist /usr/share/nginx/html
 
+# Frontend configurations
+COPY ./config.js /usr/share/nginx/html/js/config.js
+
 # NGINX configurations
 COPY ./nginx/conf.d /etc/nginx/conf.d
 
@@ -45,6 +48,8 @@ COPY ./nginx/conf.d /etc/nginx/conf.d
 COPY ./entrypoint.sh /entrypoint.sh
 
 RUN chmod 755 /entrypoint.sh
+
+ENTRYPOINT ["sh", "/entrypoint.sh"]
 
 ARG VERSION=master
 ARG VCS_REF
@@ -61,6 +66,3 @@ LABEL maintainer="Monogramm Maintainers <opensource at monogramm dot io>" \
     org.label-schema.vendor="PENPOT" \
     org.label-schema.version=$VERSION \
     org.label-schema.schema-version="1.0"
-
-
-ENTRYPOINT ["sh", "/entrypoint.sh"]

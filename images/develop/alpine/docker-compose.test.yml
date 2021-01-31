@@ -21,32 +21,35 @@ services:
     networks:
       - penpot_internal_network
     depends_on:
-      penpot_frontend:
+      penpot-frontend:
         condition: service_started
     environment:
-      - DOCKER_TEST_CONTAINER=penpot_frontend
+      - DOCKER_TEST_CONTAINER=penpot-frontend
     volumes_from:
-      - penpot_backend
-      - penpot_frontend
+      - penpot-backend
+      - penpot-frontend
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - /etc/timezone:/etc/timezone:ro
 
-  penpot_frontend:
-    build: ./
+  penpot-frontend:
+    #build:
+    #  context: ./
+    #  dockerfile: ${DOCKERFILE_PATH}
+    image: ${IMAGE_NAME}
     #image: monogramm/docker-penpot-frontend:develop
-    container_name: penpot_frontend
+    container_name: penpot-frontend
     hostname: $PENPOT_WEB_DOMAIN
     #restart: always
     depends_on:
-      - penpot_backend
+      - penpot-backend
     networks:
       - penpot_internal_network
       - penpot_external_network
     expose:
       - '80'
     ports:
-      - "80:80"
+      - "8080:80"
     volumes:
       #- frontend_data:/usr/share/nginx/html
       - backend_data:/srv/penpot/resources/public:ro
@@ -59,27 +62,29 @@ services:
       - /etc/timezone:/etc/timezone:ro
     environment:
       - PENPOT_PUBLIC_URI=http://localhost:3449/
-      - PENPOT_GOOGLE_CLIENT_ID=true
-      - PENPOT_LOGIN_WITH_LDAP=false
-      # Only used at build time
       - PENPOT_DEMO_WARNING=true
-      - PENPOT_DEPLOY_DATE=""
-      - PENPOT_DEPLOY_COMMIT=""
-      - PENPOT_DEBUG=false
+      - PENPOT_ALLOW_DEMO_USERS=true
+      - PENPOT_GOOGLE_CLIENT_ID=
+      - PENPOT_GITLAB_CLIENT_ID=
+      - PENPOT_GITHUB_CLIENT_ID=
+      - PENPOT_LOGIN_WITH_LDAP=true
 
-  penpot_backend:
-    #build: ./
-    image: monogramm/docker-penpot-backend:latest
-    container_name: penpot_backend
+  penpot-backend:
+    #build:
+    #  context: ./
+    #  dockerfile: ${DOCKERFILE_PATH}
+    #image: ${IMAGE_NAME}
+    image: monogramm/docker-penpot-backend:develop
+    container_name: penpot-backend
     #restart: always
     depends_on:
-      penpot_db:
+      penpot-db:
         condition: service_healthy
-      penpot_redis:
+      penpot-redis:
         condition: service_started
-      penpot_mailer:
+      penpot-mailer:
         condition: service_started
-      penpot_ldap:
+      penpot-ldap:
         condition: service_started
     expose:
       - 3447
@@ -101,7 +106,7 @@ services:
       - /etc/localtime:/etc/localtime:ro
       - /etc/timezone:/etc/timezone:ro
     environment:
-      - PENPOT_DEMO_DATA=1
+      - PENPOT_DEMO_DATA=
       # Security setup
       - PENPOT_SECRET=${PENPOT_SECRET}
       - PENPOT_ALLOW_DEMO_USERS=false
@@ -115,19 +120,19 @@ services:
       - PENPOT_HTTP_SERVER_PORT=6060
       - PENPOT_HTTP_SERVER_DEBUG=false
       # Database setup (with base DB properties or full JDBC URI)
-      - PENPOT_DATABASE_SERVER=penpot_db
+      - PENPOT_DATABASE_SERVER=penpot-db
       - PENPOT_DATABASE_PORT=5432
-      #- PENPOT_DATABASE_URI="postgresql://penpot_db:5432/${PENPOT_DB_NAME}"
+      #- PENPOT_DATABASE_URI="postgresql://penpot-db:5432/${PENPOT_DB_NAME}"
       - PENPOT_DATABASE_NAME=${PENPOT_DB_NAME}
       - PENPOT_DATABASE_USERNAME=${PENPOT_DB_LOGIN}
       - PENPOT_DATABASE_PASSWORD=${PENPOT_DB_PASSWD}
       # Redis setup
-      - PENPOT-REDIS-URI=redis://penpot_redis/0
+      - PENPOT-REDIS-URI=redis://penpot-redis/0
       # Mail setup
       - PENPOT_EMAIL_REPLY_TO=no-reply@${PENPOT_WEB_DOMAIN}
       - PENPOT_EMAIL_FROM=no-reply@${PENPOT_WEB_DOMAIN}
       # STMP setup
-      - PENPOT_SMTP_HOST=penpot_mailer
+      - PENPOT_SMTP_HOST=penpot-mailer
       - PENPOT_SMTP_PORT=1025
       - PENPOT_SMTP_USER=${PENPOT_SMTP_USER}
       - PENPOT_SMTP_PASSWORD=${PENPOT_SMTP_PWD}
@@ -135,8 +140,8 @@ services:
       - PENPOT_SMTP_TLS=false
       - PENPOT_SMTP_ENABLED=true
       # LDAP setup
-      - PENPOT_LDAP_HOST=penpot_ldap
-      - PENPOT_LDAP_PORT=389
+      - PENPOT_LDAP_HOST=penpot-ldap
+      - PENPOT_LDAP_PORT=10389
       - PENPOT_LDAP_SSL=false
       - PENPOT_LDAP_STARTTLS=false
       - PENPOT_LDAP_BASE_DN=ou=people,dc=planetexpress,dc=com
@@ -147,9 +152,9 @@ services:
       - PENPOT_LDAP_FULLNAME_ATTRIBUTE=displayName
       - PENPOT_LDAP_AVATAR_ATTRIBUTE=jpegPhoto
 
-  penpot_db:
+  penpot-db:
     image: postgres:alpine
-    container_name: penpot_db
+    container_name: penpot-db
     restart: always
     stop_signal: SIGINT
     healthcheck:
@@ -173,10 +178,10 @@ services:
       - POSTGRES_USER=${PENPOT_DB_LOGIN}
       - POSTGRES_PASSWORD=${PENPOT_DB_PASSWD}
 
-  penpot_redis:
+  penpot-redis:
     image: redis:6-alpine
     hostname: $PENPOT_WEB_DOMAIN
-    container_name: penpot_redis
+    container_name: penpot-redis
     restart: always
     healthcheck:
       test: ["CMD", "redis-cli", "ping"]
@@ -191,10 +196,10 @@ services:
       - /etc/localtime:/etc/localtime:ro
       - /etc/timezone:/etc/timezone:ro
 
-  penpot_mailer:
+  penpot-mailer:
     image: sj26/mailcatcher:latest
-    hostname: penpot_mailer
-    container_name: penpot_mailer
+    hostname: penpot-mailer
+    container_name: penpot-mailer
     restart: always
     networks:
       - penpot_internal_network
@@ -206,16 +211,16 @@ services:
       - /etc/localtime:/etc/localtime:ro
       - /etc/timezone:/etc/timezone:ro
 
-  penpot_ldap:
-    image: rroemhild/test-openldap:latest
-    container_name: penpot_ldap
-    hostname: penpot_ldap
+  penpot-ldap:
+    image: rroemhild/test-openldap:2.1
+    container_name: penpot-ldap
+    hostname: penpot-ldap
     expose:
-      - '389'
-      - '636'
+      - '10389'
+      - '10636'
     #ports:
-    #  - "389:389"
-    #  - "636:636"
+    #  - "10389:10389"
+    #  - "10636:10636"
     networks:
       - penpot_internal_network
 

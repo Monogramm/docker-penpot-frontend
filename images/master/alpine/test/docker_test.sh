@@ -9,7 +9,7 @@ echo "Waiting to ensure everything is fully ready for the tests..."
 sleep 60
 
 echo "Checking main containers are reachable..."
-if ! sudo ping -c 10 -q "${DOCKER_TEST_CONTAINER}" ; then
+if ! ping -c 10 -q "${DOCKER_TEST_CONTAINER}" ; then
     echo 'Main container is not responding!'
     #echo 'Check the following logs for details:'
     #tail -n 100 logs/*.log
@@ -27,7 +27,8 @@ echo 'Docker tests successful'
 # https://docs.docker.com/docker-hub/builds/automated-testing/
 ################################################################################
 
-# TODO Call PENPOT unit tests?
+# Check generated configuration
+curl "http://${DOCKER_TEST_CONTAINER}/js/config.js"
 
 
 ################################################################################

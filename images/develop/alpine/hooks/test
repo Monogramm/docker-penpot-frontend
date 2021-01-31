@@ -7,30 +7,26 @@ for file in docker-compose*.test.yml; do
 
     echo "Starting Test in ${file}..."
 
+    # Build test container
+    docker-compose --no-ansi -f "${file}" build sut
     # Test container run
     docker-compose --no-ansi -f "${file}" up -d && sleep 60
     docker-compose --no-ansi -f "${file}" logs -f "sut"
     docker-compose --no-ansi -f "${file}" ps
-    docker-compose --no-ansi -f "${file}" logs --no-color "penpot_db"
-    docker-compose --no-ansi -f "${file}" ps "penpot_db" | grep "Up"
-    docker-compose --no-ansi -f "${file}" logs --no-color "penpot_backend"
-    docker-compose --no-ansi -f "${file}" ps "penpot_backend" | grep "Up"
-    docker-compose --no-ansi -f "${file}" logs --no-color "penpot_frontend"
-    docker-compose --no-ansi -f "${file}" ps "penpot_frontend" | grep "Up"
-    #docker-compose --no-ansi -f "${file}" ps "sut" | grep "Exit 0" || exit 1
+    docker-compose --no-ansi -f "${file}" logs --no-color "penpot-db"
+    docker-compose --no-ansi -f "${file}" logs --no-color "penpot-backend"
+    docker-compose --no-ansi -f "${file}" logs --no-color "penpot-frontend"
+    docker-compose --no-ansi -f "${file}" ps "sut" | grep "Exit 0" || exit 1
     docker-compose --no-ansi -f "${file}" down
 
     # Test container restart
     docker-compose --no-ansi -f "${file}" up -d && sleep 60
     docker-compose --no-ansi -f "${file}" logs -f "sut"
     docker-compose --no-ansi -f "${file}" ps
-    docker-compose --no-ansi -f "${file}" logs --no-color "penpot_db"
-    docker-compose --no-ansi -f "${file}" ps "penpot_db" | grep "Up"
-    docker-compose --no-ansi -f "${file}" logs --no-color "penpot_backend"
-    docker-compose --no-ansi -f "${file}" ps "penpot_backend" | grep "Up"
-    docker-compose --no-ansi -f "${file}" logs --no-color "penpot_frontend"
-    docker-compose --no-ansi -f "${file}" ps "penpot_frontend" | grep "Up"
-    #docker-compose --no-ansi -f "${file}" ps "sut" | grep "Exit 0" || exit 1
+    docker-compose --no-ansi -f "${file}" logs --no-color "penpot-db"
+    docker-compose --no-ansi -f "${file}" logs --no-color "penpot-backend"
+    docker-compose --no-ansi -f "${file}" logs --no-color "penpot-frontend"
+    docker-compose --no-ansi -f "${file}" ps "sut" | grep "Exit 0" || exit 1
     docker-compose --no-ansi -f "${file}" down -v
 
 done
