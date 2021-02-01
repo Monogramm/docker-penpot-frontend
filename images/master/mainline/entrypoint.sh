@@ -136,6 +136,11 @@ gzip -c /usr/share/nginx/html/js/config.js > /usr/share/nginx/html/js/config.js.
 #  log "Reinitialize nginx links..."
 #  rm -f /etc/nginx/conf.d/*.conf
 #fi
+if ! [ -d /etc/nginx/html ]; then
+  # FIXME We shouldn't need this!
+  log "Generate nginx link for front..."
+  ln -sf /usr/share/nginx/html/ /etc/nginx/html
+fi
 
 log "Checking nginx configuration..."
 nginx -t
