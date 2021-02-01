@@ -63,13 +63,18 @@ services:
       - /etc/localtime:/etc/localtime:ro
       - /etc/timezone:/etc/timezone:ro
     environment:
-      - PENPOT_PUBLIC_URI=http://localhost:3449/
+      # Frontend config
+      - PENPOT_PUBLIC_URI=http://localhost:8080/
       - PENPOT_DEMO_WARNING=true
       - PENPOT_ALLOW_DEMO_USERS=true
       - PENPOT_GOOGLE_CLIENT_ID=
       - PENPOT_GITLAB_CLIENT_ID=
       - PENPOT_GITHUB_CLIENT_ID=
       - PENPOT_LOGIN_WITH_LDAP=true
+      # Nginx config
+      #- PENPOT_PUBLIC_DOMAIN=
+      - PENPOT_BACKEND_URI=http://penpot-backend:6060
+      - PENPOT_EXPORTER_URI=http://penpot-exporter:6061
 
   penpot-backend:
     #build:
@@ -153,6 +158,20 @@ services:
       - PENPOT_LDAP_EMAIL_ATTRIBUTE=mail
       - PENPOT_LDAP_FULLNAME_ATTRIBUTE=displayName
       - PENPOT_LDAP_AVATAR_ATTRIBUTE=jpegPhoto
+
+  penpot-exporter:
+    #image: monogramm/docker-penpot-exporter:develop
+    image: "penpotapp/exporter:develop"
+    container_name: penpot-exporter
+    expose:
+      - '6061'
+    networks:
+      - penpot_internal_network
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /etc/timezone:/etc/timezone:ro
+    environment:
+      - PENPOT_PUBLIC_URI=http://localhost:8080
 
   penpot-db:
     image: postgres:alpine
