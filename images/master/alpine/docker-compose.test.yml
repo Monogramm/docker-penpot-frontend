@@ -127,7 +127,7 @@ services:
       - PENPOT_DATABASE_USERNAME=${PENPOT_DB_LOGIN}
       - PENPOT_DATABASE_PASSWORD=${PENPOT_DB_PASSWD}
       # Redis setup
-      - PENPOT-REDIS-URI=redis://penpot-redis/0
+      - PENPOT_REDIS_URI=redis://penpot-redis/0
       # Mail setup
       - PENPOT_EMAIL_REPLY_TO=no-reply@${PENPOT_WEB_DOMAIN}
       - PENPOT_EMAIL_FROM=no-reply@${PENPOT_WEB_DOMAIN}

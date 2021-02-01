@@ -16,7 +16,7 @@ for file in docker-compose*.test.yml; do
     docker-compose --no-ansi -f "${file}" logs --no-color "penpot-db"
     docker-compose --no-ansi -f "${file}" logs --no-color "penpot-backend"
     docker-compose --no-ansi -f "${file}" logs --no-color "penpot-frontend"
-    #docker-compose --no-ansi -f "${file}" ps "sut" | grep "Exit 0" || exit 1
+    docker-compose --no-ansi -f "${file}" ps "sut" | grep "Exit 0" || exit 1
     docker-compose --no-ansi -f "${file}" down
 
     # Test container restart
@@ -26,7 +26,7 @@ for file in docker-compose*.test.yml; do
     docker-compose --no-ansi -f "${file}" logs --no-color "penpot-db"
     docker-compose --no-ansi -f "${file}" logs --no-color "penpot-backend"
     docker-compose --no-ansi -f "${file}" logs --no-color "penpot-frontend"
-    #docker-compose --no-ansi -f "${file}" ps "sut" | grep "Exit 0" || exit 1
+    docker-compose --no-ansi -f "${file}" ps "sut" | grep "Exit 0" || exit 1
     docker-compose --no-ansi -f "${file}" down -v
 
 done
