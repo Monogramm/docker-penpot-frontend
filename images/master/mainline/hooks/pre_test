@@ -3,5 +3,6 @@
 # See documentation for details:
 # https://docs.docker.com/docker-hub/builds/advanced/
 
-echo 'Download custom assets...'
-# TODO Download custom assets to test loading of images and icons
+echo 'Preparing assets directory...'
+mkdir -p "/srv/penpot/data"
+chown 777 "/srv/penpot/data"

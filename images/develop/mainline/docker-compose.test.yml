@@ -53,8 +53,7 @@ services:
     ports:
       - "8080:80"
     volumes:
-      #- frontend_data:/usr/share/nginx/html
-      - backend_data:/srv/penpot/resources/public:ro
+      - backend_data:/var/www/assets:ro
       # If you want, you can overwrite the provided default NGINX config
       #- ./nginx/conf.d/default.conf:/etc/nginx/conf.d/default.conf
       # You can also add certificates for SSL connection
@@ -65,8 +64,8 @@ services:
     environment:
       # Frontend config
       - PENPOT_PUBLIC_URI=http://localhost:8080/
-      - PENPOT_DEMO_WARNING=true
-      - PENPOT_ALLOW_DEMO_USERS=true
+      - PENPOT_DEMO_WARNING=false
+      - PENPOT_ALLOW_DEMO_USERS=false
       - PENPOT_GOOGLE_CLIENT_ID=
       - PENPOT_GITLAB_CLIENT_ID=
       - PENPOT_GITHUB_CLIENT_ID=
@@ -108,8 +107,7 @@ services:
     networks:
       - penpot_internal_network
     volumes:
-      - backend_data:/opt/data
-      - backend_m2:/root/.m2
+      - backend_data:/var/www/assets
       - /etc/localtime:/etc/localtime:ro
       - /etc/timezone:/etc/timezone:ro
     environment:
@@ -120,7 +118,7 @@ services:
       - PENPOT_REGISTRATION_ENABLED=true
       #- PENPOT_REGISTRATION_DOMAIN_WHITELIST=${DOMAIN}
       # Storage setup
-      - PENPOT_STORAGE_FS_DIRECTORY=/opt/data/assets
+      - PENPOT_STORAGE_FS_DIRECTORY=/var/www/assets
       - PENPOT_STORAGE_FS_URI=http://penpot-frontend/internal/assets
       - PENPOT_STORAGE_BACKEND=fs
       # HTTP setup

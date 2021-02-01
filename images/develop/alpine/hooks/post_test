@@ -4,4 +4,4 @@
 # https://docs.docker.com/docker-hub/builds/advanced/
 
 echo 'Removing persisted assets...'
-# TODO Clean custom assets
+rm -rf "/srv/penpot/data"
