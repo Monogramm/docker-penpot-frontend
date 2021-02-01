@@ -6,7 +6,7 @@ set -e
 # Testing docker containers
 
 echo "Waiting to ensure everything is fully ready for the tests..."
-sleep 60
+sleep 120
 
 echo "Checking main containers are reachable..."
 if ! ping -c 10 -q "${DOCKER_TEST_CONTAINER}" ; then

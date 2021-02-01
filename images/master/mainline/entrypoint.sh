@@ -2,7 +2,7 @@
 set -e
 
 log() {
-  echo "[$(date +%Y-%m-%dT%H:%M:%S%:z)] $@"
+  echo "[$(date +%Y-%m-%dT%H:%M:%S%:z)] $*"
 }
 
 
@@ -132,10 +132,10 @@ gzip -c /usr/share/nginx/html/js/config.js > /usr/share/nginx/html/js/config.js.
 ## NGinx config
 #########################################
 
-# Reinitialize nginx links
-if [ -d /etc/nginx/conf.d/ ]; then
-  rm -f /etc/nginx/conf.d/*.conf
-fi
+#if [ -d /etc/nginx/conf.d/ ]; then
+#  log "Reinitialize nginx links..."
+#  rm -f /etc/nginx/conf.d/*.conf
+#fi
 
 log "Checking nginx configuration..."
 nginx -t

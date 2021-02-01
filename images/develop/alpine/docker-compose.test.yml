@@ -20,6 +20,8 @@ services:
     command: sh /docker_test.sh
     networks:
       - penpot_internal_network
+    links:
+      - penpot-frontend
     depends_on:
       penpot-frontend:
         condition: service_started
