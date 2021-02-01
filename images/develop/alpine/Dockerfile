@@ -3,16 +3,6 @@ FROM monogramm/docker-penpot-builder:develop as builder
 ARG VERSION=develop
 ARG PENPOT_THEME=default
 
-ENV PENPOT_PUBLIC_URI=http://localhost:3449/ \
-    PENPOT_VIEW_URL="/view/" \
-    PENPOT_DEBUG=false \
-    PENPOT_GOOGLE_CLIENT_ID=true \
-    PENPOT_DEMO_WARNING=true \
-    PENPOT_DEPLOY_DATE="" \
-    PENPOT_DEPLOY_COMMIT="" \
-    PENPOT_LOGIN_WITH_LDAP=false \
-    TAG=${VERSION}
-
 # Download source from github
 ADD https://github.com/penpot/penpot/archive/${VERSION}.tar.gz /tmp/penpot.tar.gz
 # or copy frontend from source and build release
