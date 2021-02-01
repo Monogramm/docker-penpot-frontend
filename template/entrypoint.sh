@@ -7,7 +7,7 @@ log() {
 
 
 #########################################
-## PENPOT Front config
+## App Frontend config
 #########################################
 
 
@@ -115,22 +115,65 @@ update_login_with_ldap() {
   fi
 }
 
-update_public_uri /usr/share/nginx/html/js/config.js
-update_demo_warning /usr/share/nginx/html/js/config.js
-update_allow_demo_users /usr/share/nginx/html/js/config.js
-update_google_client_id /usr/share/nginx/html/js/config.js
-update_gitlab_client_id /usr/share/nginx/html/js/config.js
-update_github_client_id /usr/share/nginx/html/js/config.js
-update_login_with_ldap /usr/share/nginx/html/js/config.js
+update_public_uri /var/www/app/js/config.js
+update_demo_warning /var/www/app/js/config.js
+update_allow_demo_users /var/www/app/js/config.js
+update_google_client_id /var/www/app/js/config.js
+update_gitlab_client_id /var/www/app/js/config.js
+update_github_client_id /var/www/app/js/config.js
+update_login_with_ldap /var/www/app/js/config.js
 
 
 ## Replacing existing archive with updated version
-gzip -c /usr/share/nginx/html/js/config.js > /usr/share/nginx/html/js/config.js.gz
+gzip -c /var/www/app/js/config.js > /var/www/app/js/config.js.gz
 
 
 #########################################
 ## NGinx config
 #########################################
+
+
+update_nginx_domain_config() {
+  if [ -n "$PENPOT_PUBLIC_DOMAIN" ]; then
+    log "Updating Public Domain: $PENPOT_PUBLIC_DOMAIN"
+    sed -i \
+      -e "s|server_name .*;|server_name $PENPOT_PUBLIC_DOMAIN;|g" \
+      -e "s| #proxy_cookie_domain .*;| proxy_cookie_domain localhost $PENPOT_PUBLIC_DOMAIN;|g" \
+      "$1"
+  else
+    log "Disabling Public Domain"
+    sed -i \
+      -e 's|server_name .*;|server_name _;|g' \
+      -e 's| proxy_cookie_domain .*;| #proxy_cookie_domain localhost;|g' \
+      "$1"
+  fi
+}
+
+
+update_nginx_backend_config() {
+  if [ -n "$PENPOT_BACKEND_URI" ]; then
+    log "Updating Internal Backend URI: $PENPOT_BACKEND_URI"
+    sed -i \
+      -e "s|http://penpot-backend:6060|$PENPOT_BACKEND_URI|g" \
+      "$1"
+  fi
+}
+
+
+update_nginx_exporter_config() {
+  if [ -n "$PENPOT_EXPORTER_URI" ]; then
+    log "Updating Internal Exporter URI: $PENPOT_EXPORTER_URI"
+    sed -i \
+      -e "s|http://penpot-exporter:6061|$PENPOT_EXPORTER_URI|g" \
+      "$1"
+  fi
+}
+
+
+update_nginx_domain_config /etc/nginx/conf.d/default.conf
+update_nginx_backend_config /etc/nginx/conf.d/default.conf
+update_nginx_exporter_config /etc/nginx/conf.d/default.conf
+
 
 #if [ -d /etc/nginx/conf.d/ ]; then
 #  log "Reinitialize nginx links..."
@@ -139,7 +182,7 @@ gzip -c /usr/share/nginx/html/js/config.js > /usr/share/nginx/html/js/config.js.
 if ! [ -d /etc/nginx/html ]; then
   # FIXME We shouldn't need this!
   log "Generate nginx link for front..."
-  ln -sf /usr/share/nginx/html/ /etc/nginx/html
+  ln -sf /var/www/app/ /etc/nginx/html
 fi
 
 log "Checking nginx configuration..."

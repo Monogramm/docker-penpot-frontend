@@ -3,6 +3,10 @@ FROM monogramm/docker-penpot-builder:develop as builder
 ARG VERSION=%%VERSION%%
 ARG PENPOT_THEME=default
 
+ENV PENPOT_BACKEND_URI=http://penpot-backend:6060 \
+    PENPOT_EXPORTER_URI=http://penpot-exporter:6061 \
+    TAG=${VERSION}
+
 # Download source from github
 ADD https://github.com/penpot/penpot/archive/${VERSION}.tar.gz /tmp/penpot.tar.gz
 # or copy frontend from source and build release
@@ -27,10 +31,10 @@ ENV LANG=en_US.UTF-8 \
     LC_ALL=C.UTF-8
 
 # Copy built app to www root
-COPY --from=builder /home/penpot/frontend/target/dist /usr/share/nginx/html
+COPY --from=builder /home/penpot/frontend/target/dist /var/www/app
 
 # Frontend configurations
-COPY ./config.js /usr/share/nginx/html/js/config.js
+COPY ./config.js /var/www/app/js/config.js
 
 # NGINX configurations
 COPY ./nginx/conf.d /etc/nginx/conf.d
