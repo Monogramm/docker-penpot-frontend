@@ -1,0 +1,32 @@
+
+name: Docker Image CI
+
+on:
+  push:
+    branches:
+      - master
+      - develop
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        version: [develop]
+        variant: [openjdk-11-tools-deps-buster]
+        # version: [master, develop]
+        # variant: [openjdk-15-tools-deps-alpine, openjdk-15-tools-deps-buster,
+        #           openjdk-15-tools-deps-slim-buster, openjdk-14-tools-deps-alpine,
+        #           openjdk-14-tools-deps-buster, openjdk-14-tools-deps-slim-buster,
+        #           openjdk-11-tools-deps-buster, openjdk-11-tools-deps-slim-buster]
+
+    steps:
+      - name: Check Out Repo
+        uses: actions/checkout@v2
+
+      - name: Execute CI hooks
+        id: docker_build
+        run: cd ./images/${{ matrix.version }}/${{ matrix.variant }}/ && ./hooks/run
+
+      - name: docker images
+        run: docker images
