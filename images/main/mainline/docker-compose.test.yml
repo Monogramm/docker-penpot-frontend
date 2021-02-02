@@ -30,9 +30,9 @@ services:
     volumes_from:
       - penpot-backend
       - penpot-frontend
-    volumes:
-      - /etc/localtime:/etc/localtime:ro
-      - /etc/timezone:/etc/timezone:ro
+    #volumes:
+    #  - /etc/localtime:/etc/localtime:ro
+    #  - /etc/timezone:/etc/timezone:ro
 
   penpot-frontend:
     #build:
@@ -59,8 +59,8 @@ services:
       # You can also add certificates for SSL connection
       #- ./nginx/server.crt:/etc/nginx/keys/server.crt
       #- ./nginx/server.key:/etc/nginx/keys/server.key
-      - /etc/localtime:/etc/localtime:ro
-      - /etc/timezone:/etc/timezone:ro
+      #- /etc/localtime:/etc/localtime:ro
+      #- /etc/timezone:/etc/timezone:ro
     environment:
       # Frontend config
       - PENPOT_PUBLIC_URI=http://localhost:8080/
@@ -108,8 +108,8 @@ services:
       - penpot_internal_network
     volumes:
       - backend_data:/var/www/assets
-      - /etc/localtime:/etc/localtime:ro
-      - /etc/timezone:/etc/timezone:ro
+      #- /etc/localtime:/etc/localtime:ro
+      #- /etc/timezone:/etc/timezone:ro
     environment:
       - PENPOT_DEMO_DATA=
       # Security setup
@@ -165,9 +165,9 @@ services:
       - '6061'
     networks:
       - penpot_internal_network
-    volumes:
-      - /etc/localtime:/etc/localtime:ro
-      - /etc/timezone:/etc/timezone:ro
+    #volumes:
+    #  - /etc/localtime:/etc/localtime:ro
+    #  - /etc/timezone:/etc/timezone:ro
     environment:
       - PENPOT_PUBLIC_URI=http://localhost:8080
 
@@ -189,8 +189,8 @@ services:
       - penpot_internal_network
     volumes:
       - db_data:/var/lib/postgresql/data
-      - /etc/localtime:/etc/localtime:ro
-      - /etc/timezone:/etc/timezone:ro
+      #- /etc/localtime:/etc/localtime:ro
+      #- /etc/timezone:/etc/timezone:ro
     environment:
       - POSTGRES_INITDB_ARGS="--data-checksums"
       - POSTGRES_DB=${PENPOT_DB_NAME}
@@ -212,8 +212,8 @@ services:
       - penpot_internal_network
     volumes:
       - /srv/penpot/redis/:/data
-      - /etc/localtime:/etc/localtime:ro
-      - /etc/timezone:/etc/timezone:ro
+      #- /etc/localtime:/etc/localtime:ro
+      #- /etc/timezone:/etc/timezone:ro
 
   penpot-mailer:
     image: sj26/mailcatcher:latest
@@ -226,9 +226,9 @@ services:
       - 1025
     ports:
       - "1080:1080"
-    volumes:
-      - /etc/localtime:/etc/localtime:ro
-      - /etc/timezone:/etc/timezone:ro
+    #volumes:
+    #  - /etc/localtime:/etc/localtime:ro
+    #  - /etc/timezone:/etc/timezone:ro
 
   penpot-ldap:
     image: rroemhild/test-openldap:2.1
