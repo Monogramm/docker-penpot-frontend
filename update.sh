@@ -17,7 +17,8 @@ variants=(
 	alpine
 )
 
-min_version='0.1'
+min_version='1.0'
+dockerLatest='1.0'
 
 
 # version_greater_or_equal A B returns whether A >= B
@@ -27,13 +28,12 @@ function version_greater_or_equal() {
 
 dockerRepo="monogramm/docker-penpot-frontend"
 # Retrieve automatically the latest versions (when release available)
-#latests=( $( curl -fsSL 'https://api.github.com/repos/penpot/penpot/tags' |tac|tac| \
-#	grep -oE '[[:digit:]]+\.[[:digit:]]+\.[[:digit:]]+' | \
-#	sort -urV ) )
-
 latests=(
-	master
+	main
 	develop
+	$( curl -fsSL 'https://api.github.com/repos/penpot/penpot/tags' |tac|tac| \
+	grep -oE '[[:digit:]]+\.[[:digit:]]+\.[[:digit:]]+' | \
+	sort -urV )
 )
 
 # Remove existing images
@@ -84,12 +84,20 @@ for latest in "${latests[@]}"; do
 			' "$dir/hooks/run"
 
 			# Create a list of "alias" tags for DockerHub post_push
-			if [ "$latest" = 'master' ]; then
-				export DOCKER_TAG="$variant"
+			if [ "$version" = "$dockerLatest" ]; then
+				if [ "$variant" = 'apache' ]; then
+					export DOCKER_TAGS="$latest-$variant $version-$variant $variant $latest $version latest "
+				else
+					export DOCKER_TAGS="$latest-$variant $version-$variant $variant "
+				fi
 			else
-				export DOCKER_TAG="$latest-$variant"
+				if [ "$variant" = 'apache' ]; then
+					export DOCKER_TAGS="$latest-$variant $version-$variant $latest $version "
+				else
+					export DOCKER_TAGS="$latest-$variant $version-$variant "
+				fi
 			fi
-			echo "${DOCKER_TAG} " > "$dir/.dockertags"
+			echo "${DOCKER_TAGS} " > "$dir/.dockertags"
 
 			# Add Travis-CI env var
 			travisEnv='\n    - VERSION='"$version"' VARIANT='"$variant$travisEnv"

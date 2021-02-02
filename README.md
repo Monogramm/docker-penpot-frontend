@@ -9,7 +9,7 @@
 
 Docker image for PenPot Frontend.
 
-🚧 **This image is still in development!**
+🚧 **This image is still in beta!**
 
 ## What is PENPOT ?
 
@@ -23,11 +23,9 @@ PenPot is The Open-Source prototyping tool.
 
 <https://hub.docker.com/r/monogramm/docker-penpot-frontend/>
 
--   Branch `master`
-    -   `alpine` `latest`
-    -   `mainline`
--   Branch `develop`
-    -   `develop-alpine` `develop`
+-   `develop` (`/images/develop/alpine`)
+-   `stable` (`/images/main/alpine`)
+-   `latest` (`/images/1.0/alpine`)
 
 ## How to run this image ?
 
@@ -37,16 +35,24 @@ The following environment variables are also honored for configuring your PENPOT
 
 **Only available at build time!**
 
--   `-e PENPOT_API_URL=...` (defaults to `/api`)
--   `-e PENPOT_VIEW_URL=...` (defaults to `/view/`)
--   `-e PENPOT_DEMO=...` (not defined, setting any value will activate demo mode)
--   `-e PENPOT_DEBUG=...` (not defined, setting any value will activate debug mode)
--   `-e PENPOT_THEME=...` (defaults to `light`)
+-   `-e PENPOT_THEME=...` (defaults to `default`)
 
 Available at runtime:
 
--   `-e LANG=...` (defaults to `en_US.UTF-8`)
--   `-e LC_ALL=...` (defaults to `C.UTF-8`)
+```yml
+      # Frontend config
+      - PENPOT_PUBLIC_URI=https://penpot.example.com:8080/
+      - PENPOT_DEMO_WARNING=false
+      - PENPOT_ALLOW_DEMO_USERS=false
+      - PENPOT_GOOGLE_CLIENT_ID=
+      - PENPOT_GITLAB_CLIENT_ID=
+      - PENPOT_GITHUB_CLIENT_ID=
+      - PENPOT_LOGIN_WITH_LDAP=true
+      # Nginx config
+      - PENPOT_PUBLIC_DOMAIN=penpot.example.com
+      - PENPOT_BACKEND_URI=http://penpot-backend:6060
+      - PENPOT_EXPORTER_URI=http://penpot-exporter:6061
+```
 
 ## Questions / Issues
 
