@@ -3,5 +3,5 @@
 # See documentation for details:
 # https://docs.docker.com/docker-hub/builds/advanced/
 
-echo 'Removing persisted assets...'
-rm -rf "/srv/penpot/data"
+#echo 'Removing persisted assets...'
+#rm -rf "/srv/penpot/data"

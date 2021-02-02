@@ -25,5 +25,5 @@ jobs:
           cd ./images/${{ matrix.version }}/${{ matrix.variant }}/
           ./hooks/run
 
-      - name: docker images
+      - name: Display docker images
         run: docker images

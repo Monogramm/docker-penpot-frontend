@@ -3,6 +3,6 @@
 # See documentation for details:
 # https://docs.docker.com/docker-hub/builds/advanced/
 
-echo 'Preparing assets directory...'
-mkdir -p "/srv/penpot/data"
-chown 777 "/srv/penpot/data"
+#echo 'Preparing assets directory...'
+#mkdir -p "/srv/penpot/data"
+#chown 777 "/srv/penpot/data"

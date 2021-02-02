@@ -30,6 +30,7 @@ services:
     volumes_from:
       - penpot-backend
       - penpot-frontend
+    # If you want, you can sync time & timezone with host
     #volumes:
     #  - /etc/localtime:/etc/localtime:ro
     #  - /etc/timezone:/etc/timezone:ro
@@ -54,11 +55,12 @@ services:
       - "8080:80"
     volumes:
       - backend_data:/var/www/assets:ro
-      # If you want, you can overwrite the provided default NGINX config
-      #- ./nginx/conf.d/default.conf:/etc/nginx/conf.d/default.conf
+      # If you want, you can persist data on disk
+      #- /srv/penpot/data:/var/www/assets:ro
       # You can also add certificates for SSL connection
       #- ./nginx/server.crt:/etc/nginx/keys/server.crt
       #- ./nginx/server.key:/etc/nginx/keys/server.key
+      # If you want, you can sync time & timezone with host
       #- /etc/localtime:/etc/localtime:ro
       #- /etc/timezone:/etc/timezone:ro
     environment:
@@ -108,6 +110,9 @@ services:
       - penpot_internal_network
     volumes:
       - backend_data:/var/www/assets
+      # If you want, you can persist data on disk
+      #- /srv/penpot/data:/var/www/assets
+      # If you want, you can sync time & timezone with host
       #- /etc/localtime:/etc/localtime:ro
       #- /etc/timezone:/etc/timezone:ro
     environment:
@@ -165,6 +170,7 @@ services:
       - '6061'
     networks:
       - penpot_internal_network
+    # If you want, you can sync time & timezone with host
     #volumes:
     #  - /etc/localtime:/etc/localtime:ro
     #  - /etc/timezone:/etc/timezone:ro
@@ -189,6 +195,7 @@ services:
       - penpot_internal_network
     volumes:
       - db_data:/var/lib/postgresql/data
+      # If you want, you can sync time & timezone with host
       #- /etc/localtime:/etc/localtime:ro
       #- /etc/timezone:/etc/timezone:ro
     environment:
@@ -212,6 +219,7 @@ services:
       - penpot_internal_network
     volumes:
       - /srv/penpot/redis/:/data
+      # If you want, you can sync time & timezone with host
       #- /etc/localtime:/etc/localtime:ro
       #- /etc/timezone:/etc/timezone:ro
 
@@ -226,6 +234,7 @@ services:
       - 1025
     ports:
       - "1080:1080"
+    # If you want, you can sync time & timezone with host
     #volumes:
     #  - /etc/localtime:/etc/localtime:ro
     #  - /etc/timezone:/etc/timezone:ro
