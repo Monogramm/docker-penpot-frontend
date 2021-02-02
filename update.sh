@@ -19,6 +19,7 @@ variants=(
 
 min_version='1.0'
 dockerLatest='1.0'
+dockerDefaultVariant='alpine'
 
 
 # version_greater_or_equal A B returns whether A >= B
@@ -85,13 +86,13 @@ for latest in "${latests[@]}"; do
 
 			# Create a list of "alias" tags for DockerHub post_push
 			if [ "$version" = "$dockerLatest" ]; then
-				if [ "$variant" = 'alpine' ]; then
+				if [ "$variant" = "$dockerDefaultVariant" ]; then
 					export DOCKER_TAGS="$latest-$variant $version-$variant $variant $latest $version latest "
 				else
 					export DOCKER_TAGS="$latest-$variant $version-$variant $variant "
 				fi
 			else
-				if [ "$variant" = 'alpine' ]; then
+				if [ "$variant" = "$dockerDefaultVariant" ]; then
 					export DOCKER_TAGS="$latest-$variant $version-$variant $latest $version "
 				else
 					export DOCKER_TAGS="$latest-$variant $version-$variant "
