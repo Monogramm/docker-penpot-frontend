@@ -32,7 +32,7 @@ latests=(
 	main
 	develop
 	$( curl -fsSL 'https://api.github.com/repos/penpot/penpot/tags' |tac|tac| \
-	grep -oE '[[:digit:]]+\.[[:digit:]]+\.[[:digit:]]+' | \
+	grep -oE '[[:digit:]]+\.[[:digit:]]+\.[[:digit:]]+(-alpha|-beta)?' | \
 	sort -urV )
 )
 
