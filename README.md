@@ -5,15 +5,15 @@
 [![](https://images.microbadger.com/badges/version/monogramm/docker-penpot-frontend.svg)](https://microbadger.com/images/monogramm/docker-penpot-frontend)
 [![](https://images.microbadger.com/badges/image/monogramm/docker-penpot-frontend.svg)](https://microbadger.com/images/monogramm/docker-penpot-frontend)
 
-# PenPot Frontend Docker image
+# Penpot Frontend Docker image
 
-Docker image for PenPot Frontend.
+Docker image for Penpot Frontend.
 
 🚧 **This image is still in beta!**
 
-## What is PENPOT ?
+## What is Penpot
 
-PenPot is The Open-Source prototyping tool.
+Penpot is The Open-Source prototyping tool.
 
 > <https://www.penpot.app/>
 
@@ -27,7 +27,7 @@ PenPot is The Open-Source prototyping tool.
 -   `stable` (`/images/main/alpine`)
 -   `latest` (`/images/1.0/alpine`)
 
-## How to run this image ?
+## How to run this image
 
 ### Auto configuration via environment variables
 
