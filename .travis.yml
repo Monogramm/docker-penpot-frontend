@@ -1,5 +1,5 @@
+os: linux
 dist: trusty
-sudo: required
 
 services: docker
 
@@ -15,20 +15,40 @@ before_script:
 
 script:
   - cd "$dir"
-  - docker-compose build
+  # Test container build
+  - docker-compose -f docker-compose.test.yml build
   - docker images
-  - travis_retry docker-compose up -d && sleep 300
-  - docker-compose ps
-  - docker-compose logs
-  #- docker-compose ps "uxbox_db" | grep "Up"
-  #- docker-compose ps "uxbox_backend" | grep "Up"
-  - docker-compose ps "uxbox_frontend" | grep "Up"
+  # Test container run
+  - travis_retry travis_wait 60 docker-compose -f docker-compose.test.yml up -d
+  - docker-compose -f docker-compose.test.yml logs -f "sut"
+  - docker-compose -f docker-compose.test.yml ps
+  - docker-compose -f docker-compose.test.yml logs "penpot_db"
+  #- docker-compose -f docker-compose.test.yml ps "penpot_db" | grep "Up"
+  - docker-compose -f docker-compose.test.yml logs "penpot_backend"
+  #- docker-compose -f docker-compose.test.yml ps "penpot_backend" | grep "Up"
+  - docker-compose -f docker-compose.test.yml logs "penpot_frontend"
+  - docker-compose -f docker-compose.test.yml ps "penpot_frontend" | grep "Up"
+  - docker-compose -f docker-compose.test.yml ps "sut" | grep "Exit 0"
+  # Test container restart
+  - docker-compose -f docker-compose.test.yml down
+  - travis_retry travis_wait 60 docker-compose -f docker-compose.test.yml up -d
+  - docker-compose -f docker-compose.test.yml logs -f "sut"
+  - docker-compose -f docker-compose.test.yml ps
+  - docker-compose -f docker-compose.test.yml logs "penpot_db"
+  #- docker-compose -f docker-compose.test.yml ps "penpot_db" | grep "Up"
+  - docker-compose -f docker-compose.test.yml logs "penpot_backend"
+  #- docker-compose -f docker-compose.test.yml ps "penpot_backend" | grep "Up"
+  - docker-compose -f docker-compose.test.yml logs "penpot_frontend"
+  - docker-compose -f docker-compose.test.yml ps "penpot_frontend" | grep "Up"
+  - docker-compose -f docker-compose.test.yml ps "sut" | grep "Exit 0"
 
 notifications:
   email: false
 
 env: # Environments
+    - VERSION=1.0 VARIANT=alpine
+    - VERSION=1.0 VARIANT=mainline
     - VERSION=develop VARIANT=alpine
     - VERSION=develop VARIANT=mainline
-    - VERSION=master VARIANT=alpine
-    - VERSION=master VARIANT=mainline
+    - VERSION=main VARIANT=alpine
+    - VERSION=main VARIANT=mainline

@@ -31,7 +31,7 @@ We have preloaded some examples of what this looks like in the `nginx/conf.d/def
 
 Assuming your website uses a Frontend collection of APIs, you can setup your nginx service to reverse proxy to them avoiding any XSS configuration needs. The provided default.conf includes a `/api/` location block to serve as an example. You can replace api in `/api/` with any path you want to have forwarded to your Frontend.
 
-There is only one setting you need to adjust in this block and that is the `proxy_cookie_domain`. Assuming you have a production domain you would change `my.uxbox.com` to be your domain. If you do not have a production domain it is safe to leave this as is or delete.
+There is only one setting you need to adjust in this block and that is the `proxy_cookie_domain`. Assuming you have a production domain you would change `my.penpot.com` to be your domain. If you do not have a production domain it is safe to leave this as is or delete.
 
 ## Extending the configuration
 

@@ -1,48 +1,63 @@
-FROM monogramm/docker-uxbox-builder:latest
+FROM monogramm/docker-penpot-builder:develop as builder
 
-ARG UXBOX_THEME=light
+ARG VERSION=develop
+ARG PENPOT_THEME=default
 
-ENV UXBOX_VERSION=develop \
-    UXBOX_API_URL="/api" \
-    UXBOX_VIEW_URL="/view/" \
-    UXBOX_DEBUG=false
+ENV PENPOT_BACKEND_URI=http://penpot-backend:6060 \
+    PENPOT_EXPORTER_URI=http://penpot-exporter:6061 \
+    TAG=${VERSION}
 
 # Download source from github
-ADD https://github.com/uxbox/uxbox/archive/${UXBOX_VERSION}.tar.gz /tmp/uxbox.tar.gz
+ADD https://github.com/penpot/penpot/archive/${VERSION}.tar.gz /tmp/penpot.tar.gz
 # or copy frontend from source and build release
-#COPY . /home/uxbox/uxbox-${UXBOX_VERSION}/frontend
+#COPY . /home/penpot/penpot-${VERSION}/frontend
+
+WORKDIR /home/penpot
 
 RUN set -ex; \
-    mkdir -p /home/uxbox; \
-    cd /home/uxbox; \
-    tar -xzf /tmp/uxbox.tar.gz; \
-    rm -f /tmp/uxbox.tar.gz; \
-    mv /home/uxbox/uxbox-${UXBOX_VERSION}/frontend /home/uxbox/; \
-    rm -rf /home/uxbox/uxbox-${UXBOX_VERSION}; \
-    cd /home/uxbox/frontend; \
-    rm -f Dockerfile; \
-    rm -rf ./dist ./node_modules; \
-    sed -i \
-        -e "s|'common/dependencies/uxbox-light'|'common/dependencies/uxbox-${UXBOX_THEME}'|g" \
-        resources/styles/main.scss; \
-    sed -i \
-        -e "s|'common/dependencies/uxbox-light'|'common/dependencies/uxbox-${UXBOX_THEME}'|g" \
-        resources/styles/view.scss; \
-    [ ! -f ./scripts/build-release.sh ] || ./scripts/build-release.sh; \
-    [ ! -f ./scripts/build-dist.sh ] || ./scripts/build-dist.sh
+    tar -xzf /tmp/penpot.tar.gz --strip=1; \
+    rm -f /tmp/penpot.tar.gz;
 
+WORKDIR /home/penpot/frontend
+
+RUN set -ex; \
+    ./scripts/build.sh
 
 
 # Once application has been built, prepare production image
 FROM nginx:alpine
 
-LABEL maintainer="Monogramm Maintainers <opensource at monogramm dot io>"
-
 ENV LANG=en_US.UTF-8 \
     LC_ALL=C.UTF-8
 
 # Copy built app to www root
-COPY --from=0 /home/uxbox/frontend/dist /usr/share/nginx/html
+COPY --from=builder /home/penpot/frontend/target/dist /var/www/app
+
+# Frontend configurations
+COPY ./config.js /var/www/app/js/config.js
 
 # NGINX configurations
 COPY ./nginx/conf.d /etc/nginx/conf.d
+
+# Add entrypoint
+COPY ./entrypoint.sh /entrypoint.sh
+
+RUN chmod 755 /entrypoint.sh
+
+ENTRYPOINT ["sh", "/entrypoint.sh"]
+
+ARG VERSION=develop
+ARG VCS_REF
+ARG BUILD_DATE
+
+LABEL maintainer="Monogramm Maintainers <opensource at monogramm dot io>" \
+    version=$VERSION \
+    org.label-schema.vcs-ref=$VCS_REF \
+    org.label-schema.vcs-url="https://github.com/Monogramm/docker-penpot-frontend" \
+    org.label-schema.build-date=$BUILD_DATE \
+    org.label-schema.name="PENPOT (frontend) - The Open-Source prototyping tool" \
+    org.label-schema.description="The open-source solution for design and prototyping" \
+    org.label-schema.url="https://www.penpot.io/" \
+    org.label-schema.vendor="PENPOT" \
+    org.label-schema.version=$VERSION \
+    org.label-schema.schema-version="1.0"
