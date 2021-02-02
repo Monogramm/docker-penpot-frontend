@@ -12,13 +12,8 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        version: [develop]
-        variant: [openjdk-11-tools-deps-buster]
-        # version: [master, develop]
-        # variant: [openjdk-15-tools-deps-alpine, openjdk-15-tools-deps-buster,
-        #           openjdk-15-tools-deps-slim-buster, openjdk-14-tools-deps-alpine,
-        #           openjdk-14-tools-deps-buster, openjdk-14-tools-deps-slim-buster,
-        #           openjdk-11-tools-deps-buster, openjdk-11-tools-deps-slim-buster]
+        version: [1.0 main develop]
+        variant: [alpine mainline]
 
     steps:
       - name: Check Out Repo
