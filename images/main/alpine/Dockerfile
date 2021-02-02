@@ -12,9 +12,9 @@ ADD https://github.com/penpot/penpot/archive/${VERSION}.tar.gz /tmp/penpot.tar.g
 # or copy frontend from source and build release
 #COPY . /home/penpot/penpot-${VERSION}/frontend
 
+WORKDIR /home/penpot
+
 RUN set -ex; \
-    mkdir -p /home/penpot; \
-    cd /home/penpot; \
     tar -xzf /tmp/penpot.tar.gz --strip=1; \
     rm -f /tmp/penpot.tar.gz;
 
