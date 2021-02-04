@@ -16,7 +16,7 @@ COMMIT_MSG=$(git log -1 --format=%s)
 
 export DOCKER_REPO=monogramm/docker-penpot-frontend
 export DOCKERFILE_PATH=Dockerfile
-export DOCKER_TAG=develop
+export DOCKER_TAG=1.1
 export IMAGE_NAME=${DOCKER_REPO}:${DOCKER_TAG}
 
 # Execute hooks in following order

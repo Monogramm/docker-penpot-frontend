@@ -13,7 +13,7 @@ declare -A base=(
 
 # Only debian for now
 variants=(
-	mainline
+	#mainline
 	alpine
 )
 
@@ -43,6 +43,7 @@ rm -rf ./images/
 mkdir ./images/
 
 echo "update docker images"
+readmeTags=
 travisEnv=
 for latest in "${latests[@]}"; do
 	version=$(echo "$latest" | cut -d. -f1-2)
@@ -91,6 +92,12 @@ for latest in "${latests[@]}"; do
 				else
 					export DOCKER_TAGS="$latest-$variant $version-$variant $variant "
 				fi
+			elif [ "$version" = "$latest" ]; then
+				if [ "$variant" = "$dockerDefaultVariant" ]; then
+					export DOCKER_TAGS="$latest-$variant $latest "
+				else
+					export DOCKER_TAGS="$latest-$variant "
+				fi
 			else
 				if [ "$variant" = "$dockerDefaultVariant" ]; then
 					export DOCKER_TAGS="$latest-$variant $version-$variant $latest $version "
@@ -99,6 +106,9 @@ for latest in "${latests[@]}"; do
 				fi
 			fi
 			echo "${DOCKER_TAGS} " > "$dir/.dockertags"
+
+			# Add README tags
+			readmeTags="$readmeTags\n-   ${DOCKER_TAGS} (\`$dir/Dockerfile\`)\n"
 
 			# Add Travis-CI env var
 			travisEnv='\n    - VERSION='"$version"' VARIANT='"$variant$travisEnv"
@@ -112,6 +122,11 @@ for latest in "${latests[@]}"; do
 	fi
 
 done
+
+# update README.md
+sed '/^<!-- >Docker Tags -->/,/^<!-- <Docker Tags -->/{/^<!-- >Docker Tags -->/!{/^<!-- <Docker Tags -->/!d}}' README.md > README.md.tmp
+sed -e "s|<!-- >Docker Tags -->|<!-- >Docker Tags -->\n$readmeTags|g" README.md.tmp > README.md
+rm README.md.tmp
 
 # update .travis.yml
 travis="$(awk -v 'RS=\n\n' '$1 == "env:" && $2 == "#" && $3 == "Environments" { $0 = "env: # Environments'"$travisEnv"'" } { printf "%s%s", $0, RS }' .travis.yml)"

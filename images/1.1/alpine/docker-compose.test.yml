@@ -57,6 +57,7 @@ services:
       - backend_data:/var/www/assets:ro
       # If you want, you can persist data on disk
       #- /srv/penpot/data:/var/www/assets:ro
+      #- ./nginx/conf.d/default.conf:/etc/nginx/conf.d/default.conf
       # You can also add certificates for SSL connection
       #- ./nginx/server.crt:/etc/nginx/keys/server.crt
       #- ./nginx/server.key:/etc/nginx/keys/server.key
