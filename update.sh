@@ -17,8 +17,8 @@ variants=(
 	alpine
 )
 
-min_version='1.0'
-dockerLatest='1.0'
+min_version='1.1'
+dockerLatest='1.1'
 dockerDefaultVariant='alpine'
 
 
