@@ -23,9 +23,13 @@ Penpot is The Open-Source prototyping tool.
 
 <https://hub.docker.com/r/monogramm/docker-penpot-frontend/>
 
--   `develop` (`/images/develop/alpine`)
--   `stable` (`/images/main/alpine`)
--   `latest` (`/images/1.0/alpine`)
+<!-- >Docker Tags -->
+
+-   main-alpine main  (`images/main/alpine/Dockerfile`)
+-   develop-alpine develop  (`images/develop/alpine/Dockerfile`)
+-   1.1.0-alpha-alpine 1.1-alpine alpine 1.1.0-alpha 1.1 latest  (`images/1.1/alpine/Dockerfile`)
+
+<!-- <Docker Tags -->
 
 ## How to run this image
 
