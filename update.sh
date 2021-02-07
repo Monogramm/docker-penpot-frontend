@@ -11,9 +11,14 @@ declare -A base=(
 	[alpine]='alpine'
 )
 
+declare -A dockerVariant=(
+	[mainline]='debian'
+	[alpine]='alpine'
+)
+
 # Only debian for now
 variants=(
-	#mainline
+	mainline
 	alpine
 )
 
@@ -86,23 +91,24 @@ for latest in "${latests[@]}"; do
 			' "$dir/hooks/run"
 
 			# Create a list of "alias" tags for DockerHub post_push
+			tagVariant=${dockerVariant[$variant]}
 			if [ "$version" = "$dockerLatest" ]; then
-				if [ "$variant" = "$dockerDefaultVariant" ]; then
-					export DOCKER_TAGS="$latest-$variant $version-$variant $variant $latest $version latest "
+				if [ "$tagVariant" = "$dockerDefaultVariant" ]; then
+					export DOCKER_TAGS="$latest-$tagVariant $version-$tagVariant $tagVariant $latest $version latest "
 				else
-					export DOCKER_TAGS="$latest-$variant $version-$variant $variant "
+					export DOCKER_TAGS="$latest-$tagVariant $version-$tagVariant $tagVariant "
 				fi
 			elif [ "$version" = "$latest" ]; then
-				if [ "$variant" = "$dockerDefaultVariant" ]; then
-					export DOCKER_TAGS="$latest-$variant $latest "
+				if [ "$tagVariant" = "$dockerDefaultVariant" ]; then
+					export DOCKER_TAGS="$latest-$tagVariant $latest "
 				else
-					export DOCKER_TAGS="$latest-$variant "
+					export DOCKER_TAGS="$latest-$tagVariant "
 				fi
 			else
-				if [ "$variant" = "$dockerDefaultVariant" ]; then
-					export DOCKER_TAGS="$latest-$variant $version-$variant $latest $version "
+				if [ "$tagVariant" = "$dockerDefaultVariant" ]; then
+					export DOCKER_TAGS="$latest-$tagVariant $version-$tagVariant $latest $version "
 				else
-					export DOCKER_TAGS="$latest-$variant $version-$variant "
+					export DOCKER_TAGS="$latest-$tagVariant $version-$tagVariant "
 				fi
 			fi
 			echo "${DOCKER_TAGS} " > "$dir/.dockertags"
