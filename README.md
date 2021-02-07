@@ -33,6 +33,9 @@ Penpot is The Open-Source prototyping tool.
 
 ## How to run this image
 
+You can use the example `docker-compose.yml` at the root of the project to start a local Penpot instance.
+Feel free to update the content of `.env` to your needs.
+
 ### Auto configuration via environment variables
 
 The following environment variables are also honored for configuring your PENPOT instance:
