@@ -5,6 +5,7 @@ volumes:
   backend_data:
   backend_m2:
   frontend_data:
+  redis_data:
 
 networks:
   penpot_external_network:
@@ -65,13 +66,13 @@ services:
       #- /etc/timezone:/etc/timezone:ro
     environment:
       # Frontend config
-      - PENPOT_PUBLIC_URI=http://localhost:8080/
+      - PENPOT_PUBLIC_URI=${PENPOT_PUBLIC_URI}
       - PENPOT_DEMO_WARNING=false
       - PENPOT_ALLOW_DEMO_USERS=false
-      - PENPOT_GOOGLE_CLIENT_ID=
-      - PENPOT_GITLAB_CLIENT_ID=
-      - PENPOT_GITHUB_CLIENT_ID=
-      - PENPOT_LOGIN_WITH_LDAP=true
+      - PENPOT_GOOGLE_CLIENT_ID=${PENPOT_GOOGLE_CLIENT_ID}
+      - PENPOT_GITLAB_CLIENT_ID=${PENPOT_GITLAB_CLIENT_ID}
+      - PENPOT_GITHUB_CLIENT_ID=${PENPOT_GITHUB_CLIENT_ID}
+      - PENPOT_LOGIN_WITH_LDAP=${PENPOT_LOGIN_WITH_LDAP}
       # Nginx config
       #- PENPOT_PUBLIC_DOMAIN=
       - PENPOT_BACKEND_URI=http://penpot-backend:6060
@@ -175,7 +176,7 @@ services:
     #  - /etc/localtime:/etc/localtime:ro
     #  - /etc/timezone:/etc/timezone:ro
     environment:
-      - PENPOT_PUBLIC_URI=http://localhost:8080
+      - PENPOT_PUBLIC_URI=${PENPOT_PUBLIC_URI}
 
   penpot-db:
     image: postgres:alpine
@@ -218,7 +219,7 @@ services:
     networks:
       - penpot_internal_network
     volumes:
-      - /srv/penpot/redis/:/data
+      - redis_data:/data
       # If you want, you can sync time & timezone with host
       #- /etc/localtime:/etc/localtime:ro
       #- /etc/timezone:/etc/timezone:ro
