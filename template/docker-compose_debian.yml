@@ -159,7 +159,7 @@ services:
       - PENPOT_LDAP_AUTH_SSL=false
       - PENPOT_LDAP_AUTH_STARTTLS=false
       - PENPOT_LDAP_AUTH_BASE_DN=ou=people,dc=planetexpress,dc=com
-      - PENPOT_LDAP_AUTH_USER_QUERY=(|(uid=$username)(mail=$username))
+      #- PENPOT_LDAP_AUTH_USER_QUERY=(|(uid=$username)(mail=$username))
       - PENPOT_LDAP_AUTH_USERNAME_ATTRIBUTE=uid
       - PENPOT_LDAP_AUTH_EMAIL_ATTRIBUTE=mail
       - PENPOT_LDAP_AUTH_FULLNAME_ATTRIBUTE=displayName
