@@ -109,17 +109,19 @@ services:
       - PENPOT_SMTP_TLS=false
       - PENPOT_SMTP_ENABLED=true
       # LDAP setup
-      - PENPOT_LDAP_HOST=penpot-ldap
-      - PENPOT_LDAP_PORT=10389
-      - PENPOT_LDAP_SSL=false
-      - PENPOT_LDAP_STARTTLS=false
-      - PENPOT_LDAP_BASE_DN=ou=people,dc=planetexpress,dc=com
+      - PENPOT_LDAP_AUTH_HOST=penpot-ldap
+      - PENPOT_LDAP_AUTH_PORT=10389
+      - PENPOT_LDAP_AUTH_VERSION=3
       - PENPOT_LDAP_BIND_DN=cn=admin,dc=planetexpress,dc=com
       - PENPOT_LDAP_BIND_PASSWORD=GoodNewsEveryone
-      - PENPOT_LDAP_USERNAME_ATTRIBUTE=uid
-      - PENPOT_LDAP_EMAIL_ATTRIBUTE=mail
-      - PENPOT_LDAP_FULLNAME_ATTRIBUTE=displayName
-      - PENPOT_LDAP_AVATAR_ATTRIBUTE=jpegPhoto
+      - PENPOT_LDAP_AUTH_SSL=false
+      - PENPOT_LDAP_AUTH_STARTTLS=false
+      - PENPOT_LDAP_AUTH_BASE_DN=ou=people,dc=planetexpress,dc=com
+      - PENPOT_LDAP_AUTH_USER_QUERY=(|(uid=$username)(mail=$username))
+      - PENPOT_LDAP_AUTH_USERNAME_ATTRIBUTE=uid
+      - PENPOT_LDAP_AUTH_EMAIL_ATTRIBUTE=mail
+      - PENPOT_LDAP_AUTH_FULLNAME_ATTRIBUTE=displayName
+      - PENPOT_LDAP_AUTH_AVATAR_ATTRIBUTE=jpegPhoto
 
   penpot-exporter:
     image: monogramm/docker-penpot-exporter:${DOCKER_TAG}
