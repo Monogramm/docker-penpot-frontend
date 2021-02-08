@@ -45,6 +45,7 @@ COPY ./entrypoint.sh /entrypoint.sh
 RUN chmod 755 /entrypoint.sh
 
 ENTRYPOINT ["sh", "/entrypoint.sh"]
+CMD ["start"]
 
 ARG VERSION=main
 ARG VCS_REF
