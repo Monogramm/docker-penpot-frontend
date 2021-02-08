@@ -80,18 +80,6 @@ update_login_with_ldap() {
   fi
 }
 
-update_public_uri /var/www/app/js/config.js
-update_demo_warning /var/www/app/js/config.js
-update_allow_demo_users /var/www/app/js/config.js
-update_google_client_id /var/www/app/js/config.js
-update_gitlab_client_id /var/www/app/js/config.js
-update_github_client_id /var/www/app/js/config.js
-update_login_with_ldap /var/www/app/js/config.js
-
-
-## Replacing existing archive with updated version
-gzip -c /var/www/app/js/config.js > /var/www/app/js/config.js.gz
-
 
 #########################################
 ## NGinx config
@@ -135,23 +123,65 @@ update_nginx_exporter_config() {
 }
 
 
-update_nginx_domain_config /etc/nginx/conf.d/default.conf
-update_nginx_backend_config /etc/nginx/conf.d/default.conf
-update_nginx_exporter_config /etc/nginx/conf.d/default.conf
+#########################################
+## Main functions
+#########################################
 
 
-#if [ -d /etc/nginx/conf.d/ ]; then
-#  log "Reinitialize nginx links..."
-#  rm -f /etc/nginx/conf.d/*.conf
-#fi
-if ! [ -d /etc/nginx/html ]; then
-  # FIXME We shouldn't need this!
-  log "Generate nginx link for front..."
-  ln -sf /var/www/app/ /etc/nginx/html
-fi
+# init / update application
+init() {
 
-log "Checking nginx configuration..."
-nginx -t
+  update_public_uri /var/www/app/js/config.js
+  update_demo_warning /var/www/app/js/config.js
+  update_allow_demo_users /var/www/app/js/config.js
+  update_google_client_id /var/www/app/js/config.js
+  update_gitlab_client_id /var/www/app/js/config.js
+  update_github_client_id /var/www/app/js/config.js
+  update_login_with_ldap /var/www/app/js/config.js
 
-log "Start nginx server..."
-nginx -g "daemon off;"
+  ## Replacing existing archive with updated version
+  gzip -c /var/www/app/js/config.js > /var/www/app/js/config.js.gz
+
+
+  update_nginx_domain_config /etc/nginx/conf.d/default.conf
+  update_nginx_backend_config /etc/nginx/conf.d/default.conf
+  update_nginx_exporter_config /etc/nginx/conf.d/default.conf
+
+}
+
+# start application
+start() {
+  init
+
+  log "Checking nginx configuration..."
+  nginx -t
+
+  log "Start nginx server..."
+  nginx -g "daemon off;"
+}
+
+# display help
+print_help() {
+  echo "Monogramm Docker entrypoint for Penpot.
+
+Usage:
+docker exec  <option> [arguments]
+
+Options:
+    start                     Start main service
+    --help                    Displays this help
+    <command>                 Run an arbitrary command
+"
+}
+
+# -------------------------------------------------------------------
+# Runtime
+
+# Execute task based on command
+case "${1}" in
+# Management tasks
+-h|--help) print_help ;;
+# Service tasks
+start) start ;;
+*) exec "$@" ;;
+esac
