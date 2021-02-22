@@ -2,8 +2,10 @@
 name: Docker Image CI
 
 on:
+  pull_request:
   push:
     branches:
+      - main
       - master
       - develop
 
@@ -12,7 +14,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        version: ['1.1', 'main', 'develop']
+        version: ['1.2', 'main', 'develop']
         variant: ['alpine', 'mainline']
 
     steps:
