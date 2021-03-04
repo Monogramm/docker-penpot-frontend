@@ -1,16 +1,16 @@
 FROM monogramm/docker-penpot-builder:develop as builder
 
-ARG VERSION=main
+ARG PENPOT_VERSION=main
 ARG PENPOT_THEME=default
 
 ENV PENPOT_BACKEND_URI=http://penpot-backend:6060 \
     PENPOT_EXPORTER_URI=http://penpot-exporter:6061 \
-    TAG=${VERSION}
+    TAG=${PENPOT_VERSION}
 
 # Download source from github
-ADD https://github.com/penpot/penpot/archive/${VERSION}.tar.gz /tmp/penpot.tar.gz
+ADD https://github.com/penpot/penpot/archive/${PENPOT_VERSION}.tar.gz /tmp/penpot.tar.gz
 # or copy frontend from source and build release
-#COPY . /home/penpot/penpot-${VERSION}/frontend
+#COPY . /home/penpot/penpot-${PENPOT_VERSION}/frontend
 
 WORKDIR /home/penpot
 
@@ -50,6 +50,8 @@ CMD ["start"]
 ARG VERSION=main
 ARG VCS_REF
 ARG BUILD_DATE
+
+ENV PENPOT_VERSION=$VERSION
 
 LABEL maintainer="Monogramm Maintainers <opensource at monogramm dot io>" \
     version=$VERSION \
