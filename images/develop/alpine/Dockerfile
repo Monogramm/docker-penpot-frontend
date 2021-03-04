@@ -51,7 +51,9 @@ ARG VERSION=develop
 ARG VCS_REF
 ARG BUILD_DATE
 
-ENV PENPOT_VERSION=$VERSION
+# Keep track of image version
+RUN set -ex; \
+    sed -i -re "s/\%version\%/$VERSION/g" /var/www/app/index.html;
 
 LABEL maintainer="Monogramm Maintainers <opensource at monogramm dot io>" \
     version=$VERSION \
