@@ -1,6 +1,6 @@
 FROM monogramm/docker-penpot-builder:develop as builder
 
-ARG PENPOT_VERSION=1.3.0-alpha
+ARG PENPOT_VERSION=1.4.0-alpha
 ARG PENPOT_THEME=default
 
 ENV PENPOT_BACKEND_URI=http://penpot-backend:6060 \
@@ -47,7 +47,7 @@ RUN chmod 755 /entrypoint.sh
 ENTRYPOINT ["sh", "/entrypoint.sh"]
 CMD ["start"]
 
-ARG VERSION=1.3.0-alpha
+ARG VERSION=1.4.0-alpha
 ARG VCS_REF
 ARG BUILD_DATE
 

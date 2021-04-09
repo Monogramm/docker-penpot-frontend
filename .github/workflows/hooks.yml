@@ -14,7 +14,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        version: ['1.3', 'main', 'develop']
+        version: ['1.4', 'main', 'develop']
         variant: ['alpine', 'mainline']
 
     steps:
