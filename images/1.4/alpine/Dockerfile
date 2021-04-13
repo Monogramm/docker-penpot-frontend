@@ -1,4 +1,6 @@
 FROM monogramm/docker-penpot-builder:develop as builder
+# TODO Use official devenv as builder
+#FROM penpotapp/devenv:latest as builder
 
 ARG PENPOT_VERSION=1.4.0-alpha
 ARG PENPOT_THEME=default
@@ -21,7 +23,7 @@ RUN set -ex; \
 WORKDIR /home/penpot/frontend
 
 RUN set -ex; \
-    ./scripts/build.sh
+    ./scripts/build
 
 
 # Once application has been built, prepare production image
