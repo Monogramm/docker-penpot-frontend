@@ -23,9 +23,9 @@ RUN set -ex; \
 WORKDIR /home/penpot/frontend
 
 RUN set -ex; \
-    sed -i -e "s|CURRENT_HASH=.*|CURRENT_HASH=${SOURCE_COMMIT:-$PENPOT_VERSION}" ./scripts/build; \
-    export CURRENT_HASH=${SOURCE_COMMIT:-$PENPOT_VERSION}; \
-    ./scripts/build
+    sed -i -e "s|CURRENT_HASH=.*|CURRENT_HASH=${PENPOT_VERSION}|g" ./scripts/build; \
+    export CURRENT_HASH=${PENPOT_VERSION}; \
+    ./scripts/build "${PENPOT_VERSION}"
 
 
 # Once application has been built, prepare production image
@@ -54,10 +54,6 @@ CMD ["start"]
 ARG VERSION=main
 ARG VCS_REF
 ARG BUILD_DATE
-
-# Keep track of image version
-RUN set -ex; \
-    sed -i -re "s/\%version\%/$VERSION/g" /var/www/app/index.html;
 
 LABEL maintainer="Monogramm Maintainers <opensource at monogramm dot io>" \
     version=$VERSION \
