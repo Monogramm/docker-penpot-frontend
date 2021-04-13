@@ -23,6 +23,8 @@ RUN set -ex; \
 WORKDIR /home/penpot/frontend
 
 RUN set -ex; \
+    sed -i -e "s|CURRENT_HASH=.*|CURRENT_HASH=${SOURCE_COMMIT:-$PENPOT_VERSION}" ./scripts/build; \
+    export CURRENT_HASH=${SOURCE_COMMIT:-$PENPOT_VERSION}; \
     ./scripts/build
 
 
