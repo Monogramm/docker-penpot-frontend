@@ -130,6 +130,7 @@ services:
       # HTTP setup
       - PENPOT_HTTP_SERVER_PORT=6060
       - PENPOT_HTTP_SERVER_DEBUG=false
+      - PENPOT_PUBLIC_URI=${PENPOT_PUBLIC_URI}
       # Database setup (with base DB properties or full JDBC URI)
       - PENPOT_DATABASE_SERVER=penpot-db
       - PENPOT_DATABASE_PORT=5432
@@ -150,6 +151,8 @@ services:
       - PENPOT_SMTP_SSL=false
       - PENPOT_SMTP_TLS=false
       - PENPOT_SMTP_ENABLED=true
+      # Telemetry setup
+      - PENPOT_TELEMETRY_ENABLED=false
       # LDAP setup
       - PENPOT_LDAP_AUTH_HOST=penpot-ldap
       - PENPOT_LDAP_AUTH_PORT=10389

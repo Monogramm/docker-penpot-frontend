@@ -57,6 +57,11 @@ for latest in "${latests[@]}"; do
 	# Only add versions >= "$min_version"
 	if version_greater_or_equal "$version" "$min_version"; then
 
+		if [ ! -d "images/$version" ]; then
+			# Add GitHub Actions env var
+			githubEnv="'$version', $githubEnv"
+		fi
+
 		for variant in "${variants[@]}"; do
 			# Create the version directory with a Dockerfile.
 			dir="images/$version/$variant"
@@ -126,9 +131,6 @@ for latest in "${latests[@]}"; do
 				docker build -t "${dockerRepo}:${tag}" "$dir"
 			fi
 		done
-
-		# Add GitHub Actions env var
-		githubEnv="'$version', $githubEnv"
 
 	fi
 
