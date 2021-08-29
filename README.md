@@ -29,8 +29,10 @@ Penpot is The Open-Source prototyping tool.
 -   main-alpine main  (`images/main/alpine/Dockerfile`)
 -   develop-debian  (`images/develop/mainline/Dockerfile`)
 -   develop-alpine develop  (`images/develop/alpine/Dockerfile`)
--   1.6.4-alpha-debian 1.6-debian debian  (`images/1.6/mainline/Dockerfile`)
--   1.6.4-alpha-alpine 1.6-alpine alpine 1.6.4-alpha 1.6 latest  (`images/1.6/alpine/Dockerfile`)
+-   1.7.4-alpha-debian 1.7-debian debian  (`images/1.7/mainline/Dockerfile`)
+-   1.7.4-alpha-alpine 1.7-alpine alpine 1.7.4-alpha 1.7 latest  (`images/1.7/alpine/Dockerfile`)
+-   1.6.5-alpha-debian 1.6-debian  (`images/1.6/mainline/Dockerfile`)
+-   1.6.5-alpha-alpine 1.6-alpine 1.6.5-alpha 1.6  (`images/1.6/alpine/Dockerfile`)
 
 <!-- <Docker Tags -->
 
